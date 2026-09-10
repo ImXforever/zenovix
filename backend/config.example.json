@@ -1,0 +1,12 @@
+{
+  "llm_api_key": "",
+  "llm_base_url": "https://api.openai.com/v1",
+  "llm_model": "gpt-4o-mini",
+  "llm_max_tokens": 350,
+  "llm_timeout": 25,
+  "limit_per_minute": 10,
+  "max_message_chars": 2000,
+  "allowed_origins": ["*"],
+  "log_chat": true,
+  "kb_file": "knowledge.json"
+}

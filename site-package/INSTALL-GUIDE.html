@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Zenovix Chat — Site Installation Guide (10 minutes)</title>
+<style>
+:root{--bg:#0E0A1E;--card:#16112A;--card2:#1D1636;--code:#0B0817;--line:rgba(255,255,255,.12);--line2:rgba(255,255,255,.2);
+--ink:#F1ECFB;--dim:#A79FBE;--faint:#6E6879;--teal:#00A884;--green:#25D366;--amber:#FFC53D;--blue:#4DA3FF}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:15.5px/1.75 Inter,"Segoe UI",system-ui,sans-serif;
+background-image:radial-gradient(1100px 600px at 85% -5%,rgba(138,63,230,.2),transparent),radial-gradient(900px 500px at 5% 15%,rgba(0,168,132,.1),transparent);background-attachment:fixed}
+.wrap{max-width:820px;margin:0 auto;padding:0 18px 80px}
+.hero{padding:44px 0 8px;text-align:center}
+.hero .logo{width:60px;height:60px;border-radius:16px;margin:0 auto 14px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#25D366,#00A884);box-shadow:0 10px 30px rgba(37,211,102,.35)}
+.hero h1{font-size:clamp(1.45rem,4.2vw,2rem);margin:0 0 6px}
+.grad{background:linear-gradient(135deg,#25D366,#00A884);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.sub{color:var(--dim);margin:4px 0 14px}
+.badges{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:0 0 8px}
+.badge{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 14px;font-size:.8rem;color:var(--dim)}.badge b{color:var(--ink)}
+.bar-wrap{position:sticky;top:0;z-index:50;background:rgba(14,10,30,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);margin:20px -18px 24px;padding:10px 18px}
+.bar-row{max-width:820px;margin:0 auto;display:flex;align-items:center;gap:12px}
+.bar-track{flex:1;height:8px;border-radius:99px;background:var(--card2);overflow:hidden;border:1px solid var(--line)}
+.bar-fill{height:100%;width:0%;border-radius:99px;background:linear-gradient(90deg,#25D366,#00A884);transition:width .4s}
+.bar-text{font-size:.82rem;color:var(--dim);white-space:nowrap}.bar-text b{color:var(--green)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px 22px;margin:0 0 14px}
+.step{position:relative;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px 20px 18px 62px;margin:0 0 12px;transition:border-color .2s}
+.step.done{border-color:rgba(37,211,102,.55)}
+.step .chk{position:absolute;top:20px;left:18px;width:26px;height:26px;accent-color:#25D366;cursor:pointer}
+.step h3{margin:0 0 8px;font-size:1.04rem;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.step .sn{display:inline-flex;align-items:center;justify-content:center;min-width:26px;height:26px;padding:0 6px;border-radius:9px;background:rgba(0,168,132,.16);color:var(--green);font-size:.86rem;font-weight:800;border:1px solid rgba(0,168,132,.4)}
+.step p{margin:7px 0}
+.small,p.small{color:var(--dim);font-size:.87rem}
+kbd{background:var(--card2);border:1px solid var(--line2);border-bottom-width:2px;border-radius:6px;padding:1px 8px;font-size:.82rem;display:inline-block}
+.code{position:relative;margin:12px 0 4px}
+.code pre{background:var(--code);border:1px solid var(--line);border-radius:12px;padding:14px 16px;overflow-x:auto;font:13px/1.7 Consolas,Menlo,monospace;color:#D8F5E8;margin:0;white-space:pre-wrap;word-break:break-word}
+.copy{position:absolute;top:8px;right:8px;background:var(--card2);border:1px solid var(--line2);color:var(--dim);border-radius:8px;padding:4px 12px;font:600 .74rem/1.6 inherit;cursor:pointer;transition:.15s}
+.copy:hover{border-color:var(--teal);color:var(--ink)}.copy.ok{border-color:var(--green);color:var(--green)}
+.tip,.warn,.win{border-radius:12px;padding:11px 15px;margin:11px 0;font-size:.9rem;border:1px solid}
+.tip{background:rgba(0,168,132,.08);border-color:rgba(0,168,132,.35)}
+.warn{background:rgba(255,197,61,.07);border-color:rgba(255,197,61,.35)}
+.win{background:rgba(37,211,102,.07);border-color:rgba(37,211,102,.4)}
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:.88rem}
+th,td{border:1px solid var(--line);padding:9px 13px;text-align:left;vertical-align:top}
+th{background:var(--card2);font-weight:700;white-space:nowrap}
+td code,.ic{background:var(--code);border:1px solid var(--line);border-radius:6px;padding:1px 8px;font:12px Consolas,Menlo,monospace;color:#D8F5E8;display:inline-block;word-break:break-all}
+details{background:var(--card);border:1px solid var(--line);border-radius:14px;margin:0 0 10px;overflow:hidden}
+details summary{cursor:pointer;padding:14px 18px;font-weight:600;list-style:none;display:flex;align-items:center;gap:10px}
+details summary::before{content:"▸";color:var(--teal);transition:.2s}
+details[open] summary::before{transform:rotate(90deg)}
+details .dbody{padding:0 18px 16px 44px;color:var(--dim);font-size:.92rem}details .dbody b{color:var(--ink)}
+h3.sec2{font-size:1.15rem;margin:30px 0 12px}
+.test-row{display:flex;gap:12px;align-items:flex-start;padding:10px 4px;border-bottom:1px dashed var(--line)}
+.test-row:last-child{border-bottom:0}
+.test-row input{width:22px;height:22px;accent-color:#25D366;margin-top:5px;cursor:pointer;flex:none}
+.test-row .t b{display:block}.test-row .t span{color:var(--dim);font-size:.85rem}
+footer{text-align:center;color:var(--faint);font-size:.82rem;margin-top:40px;line-height:2}
+#toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(80px);opacity:0;background:#0E2A1F;border:1px solid var(--green);color:var(--green);border-radius:12px;padding:10px 22px;font-size:.88rem;font-weight:600;z-index:99;transition:.3s;pointer-events:none}
+#toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+@media (max-width:560px){.step{padding:16px 14px 16px 54px}.card{padding:16px}th,td{padding:7px 9px;font-size:.84rem}}
+@media print{.copy{display:none}body{background:#fff;color:#111}.card,.step,details{border-color:#ccc;background:#fff;color:#111}.step p,.small{color:#333}pre{background:#f4f4f4;color:#111}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <div class="logo"><svg width="32" height="32" viewBox="0 0 24 24" fill="none"><path d="M12 3C7 3 3 6.6 3 11c0 2.2 1 4.2 2.7 5.6L5 21l4.4-2.1c.8.2 1.7.3 2.6.3 5 0 9-3.6 9-8.2S17 3 12 3z" fill="#04120C"/><circle cx="9" cy="11" r="1.3" fill="#25D366"/><circle cx="12.5" cy="11" r="1.3" fill="#25D366"/><circle cx="16" cy="11" r="1.3" fill="#25D366"/></svg></div>
+  <h1>Install <span class="grad">Zenovix Chat</span> on your site</h1>
+  <p class="sub">Two steps: upload one file, paste two lines. The chat brain already runs on our servers — nothing else to install.</p>
+  <div class="badges">
+    <span class="badge">⏱ <b>~10 minutes</b></span>
+    <span class="badge">🧩 <b>cPanel access</b> is all you need</span>
+    <span class="badge">🛡 <b>Zero risk</b> — one static file, removable in seconds</span>
+  </div>
+</header>
+
+<div class="bar-wrap"><div class="bar-row">
+  <div class="bar-track"><div class="bar-fill" id="barFill"></div></div>
+  <div class="bar-text" id="barText"><b>0</b> of 9 steps</div>
+</div></div>
+
+<!-- STEP 1 -->
+<div class="step"><input type="checkbox" data-chk><h3><span class="sn">1</span>Log into cPanel and open File Manager</h3>
+  <p>Go to <span class="ic">yourdomain.com/cpanel</span>, log in, and open <b>File Manager</b>. Enter the <span class="ic">public_html</span> folder.</p>
+</div>
+
+<!-- STEP 2 -->
+<div class="step"><input type="checkbox" data-chk><h3><span class="sn">2</span>Create a folder named js (if it doesn't exist)</h3>
+  <p>Inside <span class="ic">public_html</span>, click <b>+ Folder</b> and name it exactly <span class="ic">js</span> (lowercase). If one already exists, just enter it.</p>
+</div>
+
+<!-- STEP 3 -->
+<div class="step"><input type="checkbox" data-chk><h3><span class="sn">3</span>Upload zenovix-chat.js</h3>
+  <p>Inside the <span class="ic">js</span> folder click <b>Upload</b> and choose the file <span class="ic">zenovix-chat.js</span> from this package. Wait for 100%.</p>
+  <p class="small">Final location: <span class="ic">public_html/js/zenovix-chat.js</span></p>
+</div>
+
+<!-- STEP 4 -->
+<div class="step"><input type="checkbox" data-chk><h3><span class="sn">4</span>Copy the embed code below</h3>
+  <p>This is your ready-to-use code — the chat server address is already built in:</p>
+  <div class="code"><button class="copy" type="button">Copy</button><pre>&lt;script&gt;
+  window.ZenovixChat = {
+    api:     "https://zenovix-production.up.railway.app/api/chat",
+    apiBase: "https://zenovix-production.up.railway.app/api/public"
+  };
+&lt;/script&gt;
+&lt;script src="/js/zenovix-chat.js?v=3.2" defer&gt;&lt;/script&gt;</pre></div>
+</div>
+
+<!-- STEP 5 -->
+<div class="step"><input type="checkbox" data-chk><h3><span class="sn">5</span>Paste it into the site — before &lt;/body&gt;</h3>
+  <p><b>Regular site:</b> open your page file (e.g. <span class="ic">index.html</span> or the footer template), find the closing <span class="ic">&lt;/body&gt;</span> tag at the very bottom, and paste the code just <b>before</b> it. Save and upload the file back.</p>
+  <p><b>WordPress:</b> install the free <b>WPCode</b> plugin → Code Snippets → <b>Add Snippet</b> → type "HTML" → paste the code → Insertion: <b>Site Wide Footer</b> → Save &amp; Activate.</p>
+</div>
+
+<!-- STEP 6 -->
+<div class="step"><input type="checkbox" data-chk><h3><span class="sn">6</span>Refresh and check 🎉</h3>
+  <p>Open your site and press <kbd>Ctrl</kbd>+<kbd>F5</kbd>. After ~2 seconds a purple <b>"Ask Zenovix"</b> button appears bottom-right.</p>
+  <div class="win">✅ That's it — the chat is live! Visitors' questions are answered by the Zenovix brain on our servers, with real order references (ZX-…) flowing to the team.</div>
+</div>
+
+<!-- STEP 7 -->
+<div class="step"><input type="checkbox" data-chk><h3><span class="sn">7</span>Run the quick test</h3>
+  <p>Open the chat and try these:</p>
+  <table>
+    <tr><th>Type this</th><th>You should see</th></tr>
+    <tr><td><span class="ic">What services do you offer?</span></td><td>a natural answer with ✓✓ ticks</td></tr>
+    <tr><td><span class="ic">/prices</span></td><td>6 services with a 🟢 LIVE tag</td></tr>
+    <tr><td><span class="ic">/lang</span></td><td>a flag menu with 21 languages (فارسی/عربی switch to right-to-left)</td></tr>
+    <tr><td>a test order (quote → confirm → e-mail)</td><td>"Your request ZX-XXXXXXXX was sent…"</td></tr>
+  </table>
+</div>
+
+<!-- STEP 8 -->
+<div class="step"><input type="checkbox" data-chk><h3><span class="sn">8</span>(Optional) Open the chat from your own buttons</h3>
+  <p>Any link on the site can open the chat — just add one attribute:</p>
+  <div class="code"><button class="copy" type="button">Copy</button><pre>&lt;a href="#" data-open-chat&gt;Ask Zenovix&lt;/a&gt;</pre></div>
+</div>
+
+<!-- STEP 9 -->
+<div class="step"><input type="checkbox" data-chk><h3><span class="sn">9</span>(Optional) Customize texts &amp; look</h3>
+  <p>Add any of these inside the first <span class="ic">&lt;script&gt;</span> block from step 4:</p>
+  <div class="code"><button class="copy" type="button">Copy</button><pre>window.ZenovixChat = {
+  /* api &amp; apiBase stay as they are */
+  lang: "en",            /* start language (21 available) */
+  theme: "dark",         /* "dark" | "light" */
+  title: "Zenovix",
+  buttonText: "Ask Zenovix",
+  sound: true,           /* message pop sound */
+  tts: true,             /* 🔊 read-aloud button */
+  email: "studio@zenovix.com",
+  phone: "+971 4570 1100"
+};</pre></div>
+  <div class="tip">💡 Full settings reference: <span class="ic">embed-code.html</span> in this package.</div>
+</div>
+
+<!-- TROUBLESHOOTING -->
+<h3 class="sec2">🚑 Something looks off? — 60-second fixes</h3>
+<div class="card" style="overflow-x:auto">
+  <table>
+    <tr><th>Symptom</th><th>Fix</th></tr>
+    <tr><td>No button appears</td><td>1) Hard refresh <kbd>Ctrl</kbd>+<kbd>F5</kbd>. 2) Open <span class="ic">yourdomain.com/js/zenovix-chat.js</span> in the browser — it must show code (not 404). 3) Make sure the pasted block sits directly before <span class="ic">&lt;/body&gt;</span>.</td></tr>
+    <tr><td>Chat opens but says "Network problem"</td><td>The chat server is briefly unreachable — retry in a minute. If it persists, contact us with this check: open <span class="ic">https://zenovix-production.up.railway.app/health</span> → should show <span class="ic">{"ok":true,…}</span>.</td></tr>
+    <tr><td>🔵 SIM tag instead of 🟢 LIVE</td><td>The <span class="ic">apiBase</span> line is missing or mistyped — compare your paste with step 4's code exactly.</td></tr>
+    <tr><td>"429 / too many requests"</td><td>Anti-spam protection (10 messages/min per visitor). Wait one minute.</td></tr>
+    <tr><td>🔊 or 🎤 buttons missing</td><td>That browser doesn't support voice features (older iOS, Firefox). Chrome/Edge/desktop Safari are fine — nothing is broken.</td></tr>
+    <tr><td>Site broke after pasting (!)</td><td>Delete the pasted block — the site returns to normal instantly. Then re-paste it directly before <span class="ic">&lt;/body&gt;</span> (not inside another <span class="ic">&lt;script&gt;</span>).</td></tr>
+  </table>
+</div>
+
+<!-- FAQ -->
+<h3 class="sec2">❓ Good to know</h3>
+<details><summary>Is it safe for the site?</summary>
+  <div class="dbody">Yes — it's one static JavaScript file, the same class of asset as an analytics snippet. It cannot touch your pages, database or e-mail. Visitor chat data goes to the Zenovix chat server (not stored on your hosting). Removing the two lines removes the widget 100%.</div>
+</details>
+<details><summary>Does it slow the site down?</summary>
+  <div class="dbody">No — ~120KB, loaded with <span class="ic">defer</span> (never blocks the page), and it only appears after the page is ready.</div>
+</details>
+<details><summary>What do visitors get?</summary>
+  <div class="dbody">A WhatsApp-style chat: smart answers, service catalog with quotes, support tickets with tracking references (ZX-…), 21 languages, read-aloud 🔊 and voice input 🎤. Orders and tickets reach your team instantly with the visitor's e-mail.</div>
+</details>
+<details><summary>HTTPS / the green lock?</summary>
+  <div class="dbody">Yes, the site must be https (cPanel → SSL/TLS Status → Run AutoSSL gives a free certificate). All URLs in the embed code are already https.</div>
+</details>
+<details><summary>How do we update the widget later?</summary>
+  <div class="dbody">We send you a new <span class="ic">zenovix-chat.js</span> → upload it over the old one in <span class="ic">js/</span> and bump the version in the embed line (<span class="ic">?v=3.2</span> → <span class="ic">?v=3.3</span>). One minute.</div>
+</details>
+
+<footer>
+  Zenovix Chat Widget v3.2 ● chat server: zenovix-production.up.railway.app ● MIT License · github.com/ImXforever/zenovix<br>
+  Print/PDF: <kbd>Ctrl</kbd>+<kbd>P</kbd> — checkboxes stay in place 💾
+</footer>
+
+</div>
+<div id="toast">Copied ✓</div>
+
+<script>
+(function(){
+  var boxes=Array.prototype.slice.call(document.querySelectorAll("input[data-chk]"));
+  var fill=document.getElementById("barFill"),txt=document.getElementById("barText");
+  var s=null;try{s=window.localStorage;s.getItem("zxsit");}catch(e){s=null;}
+  function u(sv){var d=0;boxes.forEach(function(x,i){var st=x.closest(".step");if(st){if(x.checked){d++;st.classList.add("done");}else{st.classList.remove("done");}}if(sv&&s){try{s.setItem("zxsit"+i,x.checked?"1":"0");}catch(e){}}});fill.style.width=Math.round(d/boxes.length*100)+"%";txt.innerHTML=d===boxes.length?"🎉 Installed — 9/9!":"<b>"+d+"</b> of "+boxes.length+" steps";}
+  boxes.forEach(function(x,i){if(s){try{x.checked=s.getItem("zxsit"+i)==="1";}catch(e){}}x.addEventListener("change",function(){u(true);});});u(false);
+  var toast=document.getElementById("toast"),tt;function sh(m){toast.textContent=m;toast.classList.add("show");clearTimeout(tt);tt=setTimeout(function(){toast.classList.remove("show");},1600);}
+  function legacy(t2){var a=document.createElement("textarea");a.value=t2;a.style.position="fixed";a.style.opacity="0";document.body.appendChild(a);a.select();var ok=false;try{ok=document.execCommand("copy");}catch(e){}document.body.removeChild(a);return ok;}
+  Array.prototype.forEach.call(document.querySelectorAll(".copy"),function(btn){btn.addEventListener("click",function(){var pre=btn.parentNode.querySelector("pre");var text=pre?pre.textContent:"";function done(ok){if(ok){btn.textContent="Copied ✓";btn.classList.add("ok");sh("Copied ✓");setTimeout(function(){btn.textContent="Copy";btn.classList.remove("ok");},1500);}else{sh("Auto-copy failed — select manually");}}
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){done(true);},function(){done(legacy(text));});}else{done(legacy(text));}});});
+})();
+</script>
+</body>
+</html>

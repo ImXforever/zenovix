@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Zenovix Reference Architecture — One Brain, Many Surfaces (v1.1)</title>
+<style>
+:root{--bg:#0E0A1E;--card:#16112A;--card2:#1D1636;--code:#0B0817;--line:rgba(255,255,255,.12);--line2:rgba(255,255,255,.2);
+--ink:#F1ECFB;--dim:#A79FBE;--faint:#6E6879;--teal:#00A884;--green:#25D366;--purple:#8A3FE6;--amber:#FFC53D;--red:#FF6B6B;--blue:#4DA3FF}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:15.5px/1.75 Inter,"Segoe UI",system-ui,sans-serif;
+background-image:radial-gradient(1100px 600px at 85% -5%,rgba(138,63,230,.22),transparent),radial-gradient(900px 500px at 5% 15%,rgba(0,168,132,.12),transparent);background-attachment:fixed}
+.wrap{max-width:960px;margin:0 auto;padding:0 18px 80px}
+.hero{padding:46px 0 6px;text-align:center}
+.hero h1{font-size:clamp(1.5rem,4.2vw,2.1rem);margin:0 0 8px}
+.grad{background:linear-gradient(135deg,#25D366,#00A884);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.sub{color:var(--dim);margin:4px 0 16px}
+.pills{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.pill{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 14px;font-size:.8rem;color:var(--dim)}.pill b{color:var(--ink)}
+section{scroll-margin-top:80px;margin:34px 0 0}
+.sec-head{display:flex;align-items:center;gap:13px;margin-bottom:4px}
+.sec-num{min-width:44px;height:44px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:800;background:linear-gradient(135deg,rgba(138,63,230,.35),rgba(0,168,132,.25));border:1px solid var(--line2)}
+.sec-head h2{font-size:1.22rem;margin:0}
+.sec-sub{color:var(--dim);font-size:.89rem;margin:2px 0 16px 80px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px 22px;margin:0 0 14px}
+h3.cardtitle{margin:0 0 12px;font-size:1rem}
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:.88rem}
+th,td{border:1px solid var(--line);padding:9px 13px;text-align:left;vertical-align:top}
+th{background:var(--card2);font-weight:700;white-space:nowrap}
+tr:nth-child(even) td{background:rgba(255,255,255,.015)}
+code,.ic{background:var(--code);border:1px solid var(--line);border-radius:6px;padding:1px 8px;font:12px Consolas,Menlo,monospace;color:#D8F5E8;display:inline-block;word-break:break-all}
+.st{display:inline-block;border-radius:999px;padding:2px 11px;font-size:.75rem;font-weight:700;white-space:nowrap}
+.st.g{background:rgba(37,211,102,.14);color:var(--green);border:1px solid rgba(37,211,102,.45)}
+.st.b{background:rgba(77,163,255,.12);color:var(--blue);border:1px solid rgba(77,163,255,.45)}
+.st.a{background:rgba(255,197,61,.1);color:var(--amber);border:1px solid rgba(255,197,61,.4)}
+.st.p{background:rgba(138,63,230,.14);color:#C99BFF;border:1px solid rgba(138,63,230,.5)}
+.tip{border-radius:12px;padding:12px 15px;margin:12px 0;font-size:.9rem;border:1px solid}
+.tip.green{background:rgba(37,211,102,.07);border-color:rgba(37,211,102,.4)}
+.tip.amber{background:rgba(255,197,61,.07);border-color:rgba(255,197,61,.35)}
+.tip.blue{background:rgba(77,163,255,.07);border-color:rgba(77,163,255,.4)}
+ul.t{margin:6px 0;padding-left:20px;color:var(--dim)}ul.t li{margin:5px 0}ul.t b{color:var(--ink)}
+.bar{height:9px;border-radius:99px;background:var(--card2);border:1px solid var(--line);overflow:hidden;margin:6px 0 2px}
+.bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#25D366,#00A884)}
+.meter{margin:10px 0}
+.meter .lbl{display:flex;justify-content:space-between;font-size:.82rem;color:var(--dim)}
+.meter .lbl b{color:var(--ink)}
+.diag{display:flex;flex-direction:column;margin:4px 0}
+.zone{border-radius:16px;border:1px dashed var(--line2);padding:12px 14px;background:rgba(255,255,255,.02)}
+.zone .ztitle{font-size:.76rem;color:var(--faint);font-weight:700;letter-spacing:.4px;margin:0 0 9px}
+.zrow{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}
+.node{background:var(--card2);border:1px solid var(--line2);border-radius:13px;padding:10px 13px}
+.node b{display:block;font-size:.92rem}
+.node span{color:var(--dim);font-size:.78rem;line-height:1.7;display:block}
+.node.hl{border-color:rgba(37,211,102,.55);box-shadow:0 0 0 1px rgba(37,211,102,.25)}
+.node.db{border-color:rgba(138,63,230,.5)}
+.node .tag{float:right;font-size:.68rem;color:var(--faint);border:1px solid var(--line);border-radius:99px;padding:0 8px}
+.arrow{text-align:center;color:var(--teal);line-height:1.7;font-size:.8rem;padding:3px 0}
+.arrow b{color:var(--ink);font-weight:600}
+.flow{display:flex;flex-direction:column;margin:6px 0}
+.fstep{display:flex;gap:12px;align-items:flex-start;position:relative;padding:0 0 14px}
+.fstep:last-child{padding-bottom:2px}
+.fstep .dot{min-width:30px;height:30px;border-radius:99px;display:flex;align-items:center;justify-content:center;background:rgba(0,168,132,.14);border:1px solid rgba(0,168,132,.45);color:var(--green);font-weight:800;font-size:.82rem;z-index:1}
+.fstep .body{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:8px 14px;flex:1;font-size:.89rem}
+.fstep .body span{color:var(--dim);font-size:.8rem;display:block}
+.fstep:not(:last-child)::before{content:"";position:absolute;left:14px;top:30px;bottom:0;width:2px;background:rgba(0,168,132,.3)}
+footer{text-align:center;color:var(--faint);font-size:.82rem;margin-top:46px;line-height:2.1}
+@media (max-width:700px){.zrow{grid-template-columns:1fr}.sec-sub{margin-left:0}}
+@media print{body{background:#fff;color:#111}.card,.zone,.node,.fstep .body{border-color:#ccc;background:#fff;color:#111}th,td{border-color:#bbb}.sec-sub,ul.t,.node span,.fstep .body span{color:#333}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>Zenovix Reference Architecture — <span class="grad">One Brain, Many Surfaces</span></h1>
+  <p class="sub">The final deployment design: cPanel for the site + Railway for the brain + GitHub for CI/CD</p>
+  <div class="pills">
+    <span class="pill">📐 Version: <b>v1.1</b> — Sep 10, 2026 · +Xbot integration</span>
+    <span class="pill">🔬 Based on the real code of <span class="ic">AGI</span> + <span class="ic">zenovix-chat v3.2</span></span>
+    <span class="pill">🎯 Goal: 100% parity + a real admin panel/bot</span>
+  </div>
+</header>
+
+<!-- 0 PRINCIPLES -->
+<section id="s0">
+  <div class="sec-head"><div class="sec-num">0</div><h2>Six principles behind this design</h2></div>
+  <p class="sec-sub">Every decision below derives from one of these.</p>
+  <div class="card"><ul class="t">
+    <li><b>1. One brain, many surfaces:</b> AGI is the only brain. The site widget, the customer bot, the admin bot, the TWA and the web panel are all "faces" of it — no second copy of bot logic exists anywhere.</li>
+    <li><b>2. One address, one place:</b> the live brain is <span class="ic">zenovix-production.up.railway.app</span> (verified). The current deployment references it only in the widget's two embed URLs — adding a custom domain later (Railway → Settings → Custom Domain, e.g. <span class="ic">agi.zenovix.ae</span>) means future cloud migrations become a DNS change only.</li>
+    <li><b>3. Graceful degradation:</b> every dependency has a fallback step (LIVE → KB → SIM) — the site never shows an empty chat.</li>
+    <li><b>4. Data only in durable places:</b> Postgres/Redis/R2; a cloud's ephemeral filesystem is never the source of truth.</li>
+    <li><b>5. Secrets only in env:</b> no token in git, in the widget, or on cPanel.</li>
+    <li><b>6. Scale without rewrite:</b> AGI is stateless — state lives in PG/Redis; tomorrow 2–3 replicas behind Railway's LB with zero code change.</li>
+  </ul></div>
+</section>
+
+<!-- 1 MAP -->
+<section id="s1">
+  <div class="sec-head"><div class="sec-num">1</div><h2>Topology at a glance</h2></div>
+  <p class="sec-sub">Three layers: <b>public edge (cPanel+CDN)</b> → <b>brain (Railway)</b> → <b>external services</b>.</p>
+
+  <div class="card"><div class="diag">
+    <div class="zone">
+      <p class="ztitle">LAYER 1 — PEOPLE</p>
+      <div class="zrow">
+        <div class="node"><span class="tag">public</span><b>🧑‍💻 Site visitor</b><span>zenovix.ae — the "Ask Zenovix" button</span></div>
+        <div class="node"><span class="tag">public</span><b>💬 Telegram customer</b><span>the same bot's Telegram channel</span></div>
+        <div class="node"><span class="tag">internal</span><b>👔 Manager / team</b><span>Telegram + TWA + web panel</span></div>
+      </div>
+    </div>
+    <div class="arrow">▼ <b>HTTPS</b> (static file and JSON API only)</div>
+    <div class="zone" style="border-color:rgba(0,168,132,.5)">
+      <p class="ztitle">LAYER 2 — PUBLIC EDGE (cPanel · nothing dynamic in the chat path)</p>
+      <div class="zrow">
+        <div class="node hl"><span class="tag">static</span><b>🌐 zenovix.ae</b><span>main site + <span class="ic">/js/zenovix-chat.js</span> (widget v3.2)</span></div>
+        <div class="node"><span class="tag">optional fallback</span><b>🛟 Flask fork</b><span><span class="ic">/chat/api/chat</span> — light KB chat while Railway is down</span></div>
+        <div class="node"><span class="tag">optional</span><b>☁️ Cloudflare</b><span>free CDN/SSL in front of the site</span></div>
+      </div>
+    </div>
+    <div class="arrow">▼ <b><span class="ic">zenovix-production.up.railway.app</span></b> — the widget's <span class="ic">api</span> and <span class="ic">apiBase</span> go straight to the brain (verified live)</div>
+    <div class="zone" style="border-color:rgba(138,63,230,.55)">
+      <p class="ztitle">LAYER 3 — BRAIN (Railway · auto-deployed from GitHub)</p>
+      <div class="zrow">
+        <div class="node hl db"><span class="tag">FastAPI</span><b>🧠 AGI — uvicorn</b><span><span class="ic">/api/public/*</span> site+widget · <span class="ic">/admin</span> web panel · <span class="ic">/twa</span> Telegram Web App · <span class="ic">/tg/webhook</span> · WhatsApp/email channels · <span class="ic">/healthz</span></span></div>
+      </div>
+      <div class="zrow" style="margin-top:10px">
+        <div class="node db"><span class="tag">plugin</span><b>🐘 Postgres</b><span>customers, tickets, catalog, audit, RBAC</span></div>
+        <div class="node db"><span class="tag">plugin</span><b>🧮 Redis</b><span>rate limits, HITL queue, event streams, dedup</span></div>
+        <div class="node db"><span class="tag">Cloudflare</span><b>🪣 R2</b><span>files/media (free up to 10GB)</span></div>
+      </div>
+    </div>
+    <div class="arrow">▼ <b>OUTBOUND</b></div>
+    <div class="zone">
+      <p class="ztitle">LAYER 4 — EXTERNAL SERVICES</p>
+      <div class="zrow">
+        <div class="node"><span class="tag">two-way webhook</span><b>✈️ Telegram</b><span>customer bot + admin bot + lead alerts</span></div>
+        <div class="node"><span class="tag">key in env</span><b>🤖 LLM</b><span>OpenAI / OpenRouter / Groq (LLM_MODE=direct)</span></div>
+        <div class="node"><span class="tag">optional</span><b>📩 Twilio/SendGrid</b><span>WhatsApp and email as the next channels</span></div>
+        <div class="node"><span class="tag">push→deploy</span><b>🐙 GitHub</b><span>CI (AGI's test suite) + Railway autodeploy</span></div>
+      </div>
+    </div>
+  </div></div>
+
+  <div class="tip green">🔑 <b>One-liner:</b> "cPanel is the stage, Railway is backstage" — the visitor only ever sees zenovix.ae; the brain, the data and the admin live on Railway and never depend on shared hosting.</div>
+</section>
+
+<!-- 2 SURFACES -->
+<section id="s2">
+  <div class="sec-head"><div class="sec-num">2</div><h2>Surfaces (frontends) and where each one lives</h2></div>
+  <div class="card">
+    <table>
+      <tr><th>Surface</th><th>Audience</th><th>Hosted on</th><th>Connection to the brain</th><th>Status</th></tr>
+      <tr><td>💬 <b>WhatsApp-style widget</b> (zenovix-chat.js v3.2)</td><td>site visitor</td><td>cPanel — static file at <span class="ic">public_html/js/</span></td><td><span class="ic">apiBase → zenovix-production.up.railway.app/api/public</span> + <span class="ic">api → …/api/chat</span></td><td><span class="st g">✅ ready</span></td></tr>
+      <tr><td>📱 <b>Admin TWA (in Telegram)</b></td><td>manager</td><td>inside AGI — <span class="ic">/twa</span> (twa.html with Telegram.WebApp/initData)</td><td>admin API with initData auth</td><td><span class="st g">✅ ready in AGI</span></td></tr>
+      <tr><td>🖥 <b>Admin web panel</b></td><td>manager/team</td><td>inside AGI — <span class="ic">/admin</span></td><td>admin API + RBAC + secure cookies</td><td><span class="st g">✅ ready in AGI</span></td></tr>
+      <tr><td>🤖 <b>Admin bot (Telegram)</b></td><td>manager</td><td>AGI code — <span class="ic">admin_commands.py</span></td><td>the same customer bot; <span class="ic">TELEGRAM_ADMIN_IDS</span> get the <span class="ic">/admin</span> command set</td><td><span class="st g">✅ ready in AGI</span></td></tr>
+      <tr><td>✈️ <b>Customer bot (Telegram)</b></td><td>customer</td><td>AGI channel</td><td>webhook <span class="ic">/tg/webhook</span></td><td><span class="st g">✅ ready in AGI</span></td></tr>
+      <tr><td>🛟 <b>Flask fork (light backend)</b></td><td>—</td><td>cPanel <span class="ic">/chat</span> (optional)</td><td>none — standalone; KB answers only</td><td><span class="st a">🟡 role: fallback + dev</span></td></tr>
+    </table>
+    <div class="tip blue">💡 <b>Why doesn't the admin need "connecting"?</b> The panel, the TWA and the admin bot are already wired together inside AGI (RBAC + audit + Telegram lead alerts). Deploying AGI = switching on all five surfaces at once.</div>
+  </div>
+</section>
+
+<!-- 3 FLOWS -->
+<section id="s3">
+  <div class="sec-head"><div class="sec-num">3</div><h2>Three vital flows, step by step</h2></div>
+
+  <div class="card">
+    <h3 class="cardtitle">💰 The money flow — quote &amp; order (the most important path)</h3>
+    <div class="flow">
+      <div class="fstep"><div class="dot">1</div><div class="body">Widget fetches the catalog <span>GET <span class="ic">zenovix-production.up.railway.app/api/public/catalog?lang=fa</span> → real PG products, "price on request"</span></div></div>
+      <div class="fstep"><div class="dot">2</div><div class="body">User picks service + quantity and confirms; the widget asks for e-mail and validates it <span>same contract as the website form — identical regex</span></div></div>
+      <div class="fstep"><div class="dot">3</div><div class="body">Sent to the brain <span>POST <span class="ic">/api/public/enquiry</span> — validation + honeypot + hourly rate limit</span></div></div>
+      <div class="fstep"><div class="dot">4</div><div class="body">AGI creates in Postgres: <b>customer + ticket</b>, returns a reference <span><span class="ic">ZX-XXXXXXXX</span> — the platform's original format</span></div></div>
+      <div class="fstep"><div class="dot">5</div><div class="body"><b>Instant Telegram alert</b> to the manager(s) <span><span class="ic">TELEGRAM_ADMIN_IDS</span> — "New website lead ZX-…"</span></div></div>
+      <div class="fstep"><div class="dot">6</div><div class="body">Manager reviews and decides in panel / TWA / admin bot <span>real HITL queue in Redis/PG — with timeouts and safe claiming</span></div></div>
+      <div class="fstep"><div class="dot">7</div><div class="body">Outcome reaches the customer and stays in audit &amp; reports <span>"approved/rejected" messages verbatim + full PG record</span></div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="cardtitle">🧠 Free-text chat flow</h3>
+    <div class="flow">
+      <div class="fstep"><div class="dot">1</div><div class="body">Widget → POST <span class="ic">/api/public/chat</span> <span>{message, session} — the same contract as today</span></div></div>
+      <div class="fstep"><div class="dot">2</div><div class="body">security_stack screens both directions <span>inbound/outbound filters + per-minute rate limit</span></div></div>
+      <div class="fstep"><div class="dot">3</div><div class="body">The brain builds the answer <span>approved knowledge (knowledge_context) + LLM — internal tools never exposed</span></div></div>
+      <div class="fstep"><div class="dot">4</div><div class="body">If the LLM/service is unavailable <span>AGI falls back to its KB — and if Railway itself is down, the widget falls back to its built-in trilingual knowledge (next rung)</span></div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="cardtitle">🛡 Support flow</h3>
+    <div class="flow">
+      <div class="fstep"><div class="dot">1</div><div class="body">User: <span class="ic">/support</span> → severity → issue description</div></div>
+      <div class="fstep"><div class="dot">2</div><div class="body">A real ticket is created in AGI <span>POST <span class="ic">/enquiry</span> tagged TICKET — same lead pipeline, trackable in the panel</span></div></div>
+      <div class="fstep"><div class="dot">3</div><div class="body">The team replies in panel/TWA; the user's widget shows the status <span>open/pending/closed pills</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 4 ADRs -->
+<section id="s4">
+  <div class="sec-head"><div class="sec-num">4</div><h2>Eight key decisions (ADRs) — with reasons and rejected alternatives</h2></div>
+  <div class="card">
+    <table>
+      <tr><th>#</th><th>Decision</th><th>Why</th><th>Rejected alternative</th></tr>
+      <tr><td>1</td><td><b>Brain on Railway</b> using the repo's own Dockerfile</td><td>AGI needs PG/Redis/Docker; cPanel offers none. The deploy guide + env file already exist in the repo</td><td>running AGI on cPanel ❌ / Render/Fly — no advantage, pointless migration</td></tr>
+      <tr><td>2</td><td><b>Widget calls AGI directly</b></td><td>Proxying through cPanel = two failure points + latency + pressure on shared hosting</td><td>PHP reverse-proxy on cPanel ❌ (the CORS patch is only ~4 lines)</td></tr>
+      <tr><td>3</td><td><b>Live brain URL:</b> zenovix-production.up.railway.app (custom domain = optional future step)</td><td>zero DNS work to go live today; a custom domain later keeps migrations to a DNS record</td><td>blocking the launch on domain/DNS setup ❌</td></tr>
+      <tr><td>4</td><td><b>cPanel serves static only</b> in the chat path</td><td>lowest risk — purely CDN/file; Passenger and Setup Python App leave the critical path</td><td>running the main backend on shared hosting ❌</td></tr>
+      <tr><td>5</td><td><b>Flask fork → fallback/dev role</b></td><td>free, keeps KB chat alive if Railway is down; its files persist on cPanel</td><td>deleting the fork 🟡 (still useful for local dev)</td></tr>
+      <tr><td>6</td><td><b>ZX references only from AGI</b></td><td>ZX = a real ticket in PG; the fork's local "Q" refs stay SIM-only — one source of truth</td><td>minting ZX in the fork ❌</td></tr>
+      <tr><td>7</td><td><b>Lead = PG + Telegram copy</b></td><td>even in the worst blackout the lead is in the manager's pocket (alert) — losing a lead becomes impossible</td><td>single-channel dependency ❌</td></tr>
+      <tr><td>8</td><td><b>Two-lane CI/CD:</b> push→Railway for AGI; tag→manual JS upload for the widget</td><td>AGI ships 1,222 tests that run in CI; the widget is one file — <span class="ic">?v=3.2</span> versioning is enough</td><td>separate CDN for the widget ❌ (same-origin with the site is simpler and faster)</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- 5 RESILIENCE -->
+<section id="s5">
+  <div class="sec-head"><div class="sec-num">5</div><h2>The resilience ladder — when things break</h2></div>
+  <p class="sec-sub">Principle 3: graceful degradation. A normal user should never notice.</p>
+  <div class="card">
+    <table>
+      <tr><th>Rung</th><th>Scenario</th><th>System behavior</th><th>User experience</th></tr>
+      <tr><td><span class="st g">T0 normal</span></td><td>everything up</td><td>widget → AGI; catalog/orders/chat all real</td><td>🟢 LIVE badge + ZX references</td></tr>
+      <tr><td><span class="st b">T1</span></td><td>LLM down/slow</td><td>AGI falls back to the approved KB (existing code behavior)</td><td>slightly more generic answers, no outage</td></tr>
+      <tr><td><span class="st a">T2</span></td><td>Railway down</td><td>widget: chat → (optional) cPanel fork → built-in trilingual knowledge; shop → SIM mode; orders persist in localStorage with <span class="ic">pendingRef</span></td><td>chat still answers; 🔵 SIM badge; no raw errors</td></tr>
+      <tr><td><span class="st p">T3 (v3.3)</span></td><td>Railway returns</td><td>auto-sync of queued orders (the widget-side Outbox pattern) → converted to ZX</td><td>"your earlier request was registered" — nothing lost</td></tr>
+    </table>
+    <div class="tip amber">🔔 <b>Observability:</b> Docker's internal healthcheck (every 30s → auto-restart) + a free external monitor (UptimeRobot) on <span class="ic">/healthz</span> every 5 min → email/Telegram alerts. T2 gets discovered in minutes, not by customer complaints.</div>
+  </div>
+</section>
+
+<!-- 6 SECURITY -->
+<section id="s6">
+  <div class="sec-head"><div class="sec-num">6</div><h2>Security — what exists, what you must do</h2></div>
+  <div class="card">
+    <table>
+      <tr><th>Layer</th><th>Already in the code (no work)</th><th>Your work at deploy time</th></tr>
+      <tr><td>Public (widget/form)</td><td>per-IP rate limits (per-minute chat, hourly enquiry) · <span class="ic">website</span> honeypot · message length caps · control-char sanitization · two-way reply screening</td><td>CORS whitelist limited to zenovix.ae · HTTPS on</td></tr>
+      <tr><td>Admin</td><td>role-based RBAC + full audit + bootstrap admin + secure cookies (COOKIE_SECURE)</td><td>a strong <span class="ic">ADMIN_BOOTSTRAP_PASSWORD</span> + rotate it after first login + real team users</td></tr>
+      <tr><td>Telegram</td><td>webhook secret + <span class="ic">TELEGRAM_ADMIN_IDS</span> whitelist</td><td>setWebhook with secret_token (command in the repo guide)</td></tr>
+      <tr><td>Data</td><td>versioned PG migrations + schema guard</td><td>daily backups (section 7) + R2 versioning</td></tr>
+      <tr><td>Secrets</td><td>no default values for tokens — the app refuses to boot without env (ConfigError)</td><td>everything only in Railway Variables; never in git/widget</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- 7 DATA -->
+<section id="s7">
+  <div class="sec-head"><div class="sec-num">7</div><h2>Data, backups, monitoring</h2></div>
+  <div class="card"><ul class="t">
+    <li><b>Single source of truth:</b> Postgres — customers, tickets, catalog, permissions, audit. Redis holds only transient state (rates, queues, HITL locks).</li>
+    <li><b>Daily backups:</b> Railway automatic snapshots + a scheduled <span class="ic">pg_dump</span> into the same R2 (a tiny worker service or a free external cron). Test restores once a month.</li>
+    <li><b>Conversations:</b> logged in PG (LOG_TO_DB) — analyzable in the panel's analytics; replaces the fork's jsonl.</li>
+    <li><b>Retention:</b> audit is append-only; older data archives to R2 (AGI's own archive module).</li>
+    <li><b>Monitoring:</b> healthz (internal) + UptimeRobot (external) + Railway metrics; alerts to the manager's Telegram.</li>
+  </ul></div>
+</section>
+
+<!-- 8 COST -->
+<section id="s8">
+  <div class="sec-head"><div class="sec-num">8</div><h2>Realistic monthly cost</h2></div>
+  <div class="card">
+    <table>
+      <tr><th>Item</th><th>Plan/size</th><th>Approx. cost</th></tr>
+      <tr><td>Railway (Hobby base)</td><td>includes ~$5 usage credit</td><td>$5</td></tr>
+      <tr><td>AGI — one always-on uvicorn container</td><td>~0.5 vCPU + 512MB</td><td>~$15</td></tr>
+      <tr><td>Postgres plugin</td><td>smallest (0.25 vCPU / 256MB–1GB)</td><td>~$5–8</td></tr>
+      <tr><td>Redis plugin</td><td>smallest</td><td>~$5–7</td></tr>
+      <tr><td>Cloudflare + R2 + UptimeRobot</td><td>free tiers</td><td>$0</td></tr>
+      <tr><td>cPanel</td><td>existing host</td><td>$0 extra</td></tr>
+      <tr><td><b>Total</b></td><td></td><td><b>~$30–40/mo</b> (idle usage lowers it; Pro/$20 only if a bigger team joins)</td></tr>
+    </table>
+    <div class="tip blue">💰 <b>Optimizers:</b> one worker (the repo default) · smallest plugins · no Hermes sidecar needed in LLM_MODE=direct · scale only when metrics say so. Pricing refs: ~$20/vCPU and ~$10/GB-RAM per month + base plan (railway pricing trackers, 2026).</div>
+  </div>
+</section>
+
+<!-- 9 ROADMAP -->
+<section id="s9">
+  <div class="sec-head"><div class="sec-num">9</div><h2>Execution roadmap — 5 phases</h2></div>
+  <p class="sec-sub">Full checklists live in <span class="ic">deployment-guide.html</span> — this is the summary.</p>
+  <div class="card"><ul class="t">
+    <li><b>Phase 0 — prep (30 min):</b> CORS patch → GitHub · Railway account linked to the repo · DNS plan for <span class="ic">agi</span>.</li>
+    <li><b>Phase 1 — deploy the brain (1 h):</b> variables from the READY.env + plugins (Postgres/Redis/Bucket) · custom domain · test /healthz, /api/public/site, /api/public/catalog?lang=fa · Telegram setWebhook.</li>
+    <li><b>Phase 2 — switch the site widget (15 min):</b> embed code with zenovix-production.up.railway.app (already the default) · run the 8-point test (chat, catalog, order→ZX+alert, FA/mobile).</li>
+    <li><b>Phase 3 — admins &amp; team (30 min):</b> /admin bootstrap login → real users → rotate bootstrap · TWA menu button · UptimeRobot + daily PG backup.</li>
+    <li><b>Phase 4 — hardening (optional, v3.3):</b> widget failover chain (api → cPanel fork → local KB) · outbox sync of offline orders · WhatsApp/email channels via Twilio/SendGrid.</li>
+  </ul></div>
+</section>
+
+<!-- 10 XBOT -->
+<section id="s10">
+  <div class="sec-head"><div class="sec-num">10</div><h2>Xbot (LaunchBot) integration — what came into the widget</h2></div>
+  <p class="sec-sub">The <span class="ic">ImXforever/Xbot</span> repo was cloned and code-reviewed (llm/client.py · front/web.py · back/games/*). What shipped in widget v3.2:</p>
+  <div class="card">
+    <table>
+      <tr><th>Xbot asset</th><th>Mechanism in Xbot</th><th>Ported into widget v3.2</th><th>Status</th></tr>
+      <tr><td>🔊 Read-aloud (TTS)</td><td>server-side <span class="ic">edge-tts</span> — auto FA/EN voices with gender (Dilara/Farid · Ava/Andrew) — 🔊/📝 buttons under each answer + voice mode</td><td><b>a 🔊 button next to the widget FAB</b> (auto-reads every answer) + 🔊 on each bubble — using the <b>browser's Web Speech API</b> (no server, no cost, works offline) · language from the 21 UI languages (fa-IR etc.) · persistent preference</td><td><span class="st g">✅ v3.2 — 45/45 tests</span></td></tr>
+      <tr><td>🎤 Voice input</td><td>voice message → <span class="ic">transcribe</span> (Whisper)</td><td>composer mic button — browser <span class="ic">SpeechRecognition</span>, UI language; progressive (unsupported browsers hide the button)</td><td><span class="st g">✅ v3.2</span></td></tr>
+      <tr><td>📦 /track tracking</td><td>track page per reference + customer reply</td><td><span class="ic">/track</span> command + "track" keyword → per-reference status + live ZX check via <span class="ic">GET /api/public/track</span> (new fork endpoint)</td><td><span class="st g">✅ v3.2</span></td></tr>
+      <tr><td>🎵 Neural voices (TTS upgrade)</td><td>edge-tts (free) or OpenAI tts-1</td><td>upgrade path: once AGI/Railway is live, add <span class="ic">/api/public/speak</span> with edge-tts (same voices) + automatic widget fallback to Web Speech</td><td><span class="st a">🟡 phase 4</span></td></tr>
+      <tr><td>🃏 4-player Hokm game</td><td>stdlib engine + 3 agents (🐺🤝🦊 heuristic + LLM banter) + dual-pane web</td><td>a JS port is a standalone effort — best placed as a separate <span class="ic">/games</span> page on the same domain (not inside the B2B customer chat)</td><td><span class="st a">🟡 future module</span></td></tr>
+      <tr><td>🌐 Web search (ddgs) · 🖼 image gen · 👁 vision</td><td>backend-side with an LLM key</td><td>needs a backend — lands on AGI/Railway as brain tools, not in the widget</td><td><span class="st a">🟡 with phase 1</span></td></tr>
+      <tr><td>🧱 Architecture patterns</td><td>four layers front/back/data/llm · i18n with two-stage fallback · SQLite+Volume · unified launcher</td><td>aligned with this blueprint: layering, two-stage fallback (LIVE→KB→SIM), durable data, single Railway service</td><td><span class="st b">🔵 inspiration</span></td></tr>
+    </table>
+    <div class="tip green">✅ <b>v3.2 result:</b> the widget now passes 45/45 tests — bot parity + a voice layer (FAB-side TTS + mic) + reference tracking. Suite: <span class="ic">cd tests &amp;&amp; node suite.js</span></div>
+  </div>
+</section>
+
+<footer>
+  Zenovix Reference Architecture v1.1 ● designed against the real code of AGI 1.6.0 + zenovix-chat v3.2 ● September 10, 2026<br>
+  Companion: <span class="ic">deployment-guide.html</span> (how) · <span class="ic">setup-guide.html</span> (widget install) · package: <span class="ic">Zenovix-Complete.zip</span>
+</footer>
+
+</div>
+</body>
+</html>

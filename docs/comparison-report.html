@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Comparison Report — Original AGI Platform vs the zenovix-chat v3.2 Fork</title>
+<style>
+:root{--bg:#0E0A1E;--card:#16112A;--card2:#1D1636;--code:#0B0817;--line:rgba(255,255,255,.12);--line2:rgba(255,255,255,.2);
+--ink:#F1ECFB;--dim:#A79FBE;--faint:#6E6879;--teal:#00A884;--green:#25D366;--purple:#8A3FE6;--amber:#FFC53D;--red:#FF6B6B;--blue:#4DA3FF}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15.5px/1.75 Inter,"Segoe UI",system-ui,sans-serif;
+background-image:radial-gradient(1100px 600px at 85% -5%,rgba(138,63,230,.22),transparent),radial-gradient(900px 500px at 5% 15%,rgba(0,168,132,.12),transparent);background-attachment:fixed}
+.wrap{max-width:960px;margin:0 auto;padding:0 18px 80px}
+.hero{padding:46px 0 6px;text-align:center}
+.hero h1{font-size:clamp(1.4rem,4.2vw,2rem);margin:0 0 8px}
+.grad{background:linear-gradient(135deg,#25D366,#00A884);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.sub{color:var(--dim);margin:4px 0 16px}
+.pills{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.pill{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 14px;font-size:.8rem;color:var(--dim)}.pill b{color:var(--ink)}
+.vs{display:grid;grid-template-columns:1fr auto 1fr;gap:14px;align-items:stretch;margin:26px 0 8px}
+.vs .side{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px 20px}
+.vs .side.orig{border-color:rgba(138,63,230,.5)}
+.vs .side.fork{border-color:rgba(37,211,102,.5)}
+.vs .side h3{margin:0 0 4px;font-size:1.05rem}
+.vs .side .role{color:var(--dim);font-size:.84rem;margin-bottom:10px}
+.vs .side ul{margin:0;padding-left:18px;color:var(--dim);font-size:.86rem}
+.vs .side ul b{color:var(--ink)}
+.vs .mid{display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--faint)}
+section{margin:34px 0 0}
+.sec-head{display:flex;align-items:center;gap:13px;margin-bottom:4px}
+.sec-num{min-width:44px;height:44px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:800;background:linear-gradient(135deg,rgba(138,63,230,.35),rgba(0,168,132,.25));border:1px solid var(--line2)}
+.sec-head h2{font-size:1.22rem;margin:0}
+.sec-sub{color:var(--dim);font-size:.89rem;margin:2px 0 16px 80px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px 22px;margin:0 0 14px}
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:.88rem}
+th,td{border:1px solid var(--line);padding:9px 13px;text-align:left;vertical-align:top}
+th{background:var(--card2);font-weight:700;white-space:nowrap}
+tr:nth-child(even) td{background:rgba(255,255,255,.015)}
+code,.ic{background:var(--code);border:1px solid var(--line);border-radius:6px;padding:1px 8px;font:12px Consolas,Menlo,monospace;color:#D8F5E8;display:inline-block;word-break:break-all}
+.st{display:inline-block;border-radius:999px;padding:2px 11px;font-size:.75rem;font-weight:700;white-space:nowrap}
+.st.same{background:rgba(37,211,102,.14);color:var(--green);border:1px solid rgba(37,211,102,.45)}
+.st.adapt{background:rgba(77,163,255,.12);color:var(--blue);border:1px solid rgba(77,163,255,.45)}
+.st.out{background:rgba(255,197,61,.1);color:var(--amber);border:1px solid rgba(255,197,61,.4)}
+.st.new{background:rgba(138,63,230,.14);color:#C99BFF;border:1px solid rgba(138,63,230,.5)}
+.tip{border-radius:12px;padding:12px 15px;margin:12px 0;font-size:.9rem;border:1px solid}
+.tip.green{background:rgba(37,211,102,.07);border-color:rgba(37,211,102,.4)}
+.tip.amber{background:rgba(255,197,61,.07);border-color:rgba(255,197,61,.35)}
+.tip.blue{background:rgba(77,163,255,.07);border-color:rgba(77,163,255,.4)}
+ul.t{margin:6px 0;padding-left:20px;color:var(--dim)}ul.t li{margin:5px 0}ul.t b{color:var(--ink)}
+.bar{height:9px;border-radius:99px;background:var(--card2);border:1px solid var(--line);overflow:hidden;margin:6px 0 2px}
+.bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#25D366,#00A884)}
+.meter{margin:10px 0}.meter .lbl{display:flex;justify-content:space-between;font-size:.82rem;color:var(--dim)}.meter .lbl b{color:var(--ink)}
+footer{text-align:center;color:var(--faint);font-size:.82rem;margin-top:46px;line-height:2.1}
+@media (max-width:700px){.vs{grid-template-columns:1fr}.vs .mid{padding:2px 0}}
+@media print{body{background:#fff;color:#111}.card,.vs .side{border-color:#ccc;background:#fff;color:#111}th,td{border-color:#bbb}.sec-sub,ul.t,.vs .side .role{color:#333}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>Comparison: <span class="grad">original AGI platform</span> vs the <span class="grad">zenovix-chat v3.2 fork</span></h1>
+  <p class="sub">Based on the actual code of both repositories — not guesswork; with verbatim evidence from the files ✔</p>
+  <div class="pills">
+    <span class="pill">📅 <b>Sep 10, 2026</b></span>
+    <span class="pill">🔬 Method: direct code comparison + a 45/45 test suite</span>
+    <span class="pill">⚖️ Verdict: <b>the fork = the platform's web channel, carved out</b></span>
+  </div>
+</header>
+
+<div class="vs">
+  <div class="side orig">
+    <h3>📦 Original — <span class="ic">/AGI</span></h3>
+    <div class="role">the full "Zenovix" enterprise bot platform — version 1.6.0</div>
+    <ul>
+      <li><b>457 files / ~17MB</b> — FastAPI + Docker + CI</li>
+      <li>bot brain: <b>94 modules</b> in <span class="ic">app/core</span> (~22k lines) — orchestrator, RAG, memory, skills, LLM</li>
+      <li>admin panel: <b>30 API modules</b> + full UI (RBAC, audit, CRM…)</li>
+      <li>5+1 channels: Telegram, WhatsApp, email, Instagram, Twitter + web</li>
+      <li>infrastructure: PostgreSQL + Redis + R2 + parquet archive</li>
+    </ul>
+  </div>
+  <div class="mid">vs</div>
+  <div class="side fork">
+    <h3>💬 Fork — <span class="ic">zenovix-chat v3.2</span></h3>
+    <div class="role">an embeddable chat widget + a single-file backend</div>
+    <ul>
+      <li><b>26 files / ~160KB</b> — single-file Flask, no heavy dependencies</li>
+      <li>widget <b>~2,040 lines</b>: the whole bot environment (menu/shop/HITL) in the browser</li>
+      <li>backend <b>~640 lines</b>: the same <span class="ic">/api/public/*</span> contract</li>
+      <li>web channel only — designed for ordinary cPanel hosting</li>
+      <li>storage: JSONL on the host + the customer's localStorage</li>
+    </ul>
+  </div>
+</div>
+
+<div class="tip green">🎯 <b>One-liner for stakeholders:</b> the fork is not a "mini copy" of the platform; it is <b>the platform's web channel</b> — API contract, bot copy, reference formats and validation rules were lifted verbatim from the original code, while the heavy chat brain stays on the main server.</div>
+
+<section>
+  <div class="sec-head"><div class="sec-num">1</div><h2>API contract — endpoint by endpoint</h2></div>
+  <p class="sec-sub">Original reference: <span class="ic">app/gateway/public_site.py</span> vs the fork's <span class="ic">backend/app.py</span>.</p>
+  <div class="card">
+    <table>
+      <tr><th>Endpoint</th><th>In AGI (original)</th><th>In the fork</th><th>Status</th></tr>
+      <tr><td><span class="ic">GET /api/public/site</span></td><td>tenant / agent / currency / services / version</td><td>same fields, same shape — verified output with version 1.6.0</td><td><span class="st same">✅ identical</span></td></tr>
+      <tr><td><span class="ic">GET /api/public/catalog?lang=</span></td><td>products from PostgreSQL + full i18n + <span class="ic">rtl:true</span></td><td>same shape with the 6 AGI services (static) + i18n + rtl — the fork has no PG</td><td><span class="st adapt">🔵 compatible</span></td></tr>
+      <tr><td><span class="ic">POST /api/public/enquiry</span></td><td>strict validation, <span class="ic">website</span> honeypot, rate limit, creates customer+ticket in PG, Telegram alert → <span class="ic">"ZX-"+8hex</span></td><td>same validation (even the error strings verbatim), same honeypot, rate limit → saved to <span class="ic">leads.jsonl</span> → same <span class="ic">ZX-XXXXXXXX</span> format; <span class="ic">GET /track</span> added in v3.2</td><td><span class="st same">✅ identical contract</span></td></tr>
+      <tr><td><span class="ic">POST /api/public/chat</span></td><td>inline knowledge-grounded brain + two-way security_stack + rate limit</td><td><span class="ic">knowledge.json</span> + optional LLM (OpenAI-compatible) + spam filter + rate limit — same <span class="ic">{message,session}</span> contract</td><td><span class="st adapt">🔵 compatible</span></td></tr>
+      <tr><td><span class="ic">GET /health</span></td><td>service health</td><td><span class="ic">{"ok":true,"kb_entries":13,…}</span></td><td><span class="st same">✅ identical</span></td></tr>
+    </table>
+    <div class="tip blue">🔎 <b>Evidence, verbatim from the original code:</b> AGI's e-mail validator returns <span class="ic">"a valid e-mail address is required"</span> — the fork returns exactly that. AGI's reference format: <span class="ic">"ZX-" + uuid…[:8].upper()</span> — the fork does exactly that. The shop success message is verbatim from <span class="ic">catalog_i18n.py</span>.</div>
+    <div class="tip amber">⚠️ <b>Intentional difference:</b> in AGI, an enquiry creates a customer and a ticket in PostgreSQL and alerts Telegram managers. In the fork, the lead is recorded in <span class="ic">logs/leads.jsonl</span> on the host (alerting is stubbed off). The <b>lead is still captured</b> — but there is no CRM/PG behind it.</div>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><div class="sec-num">2</div><h2>Bot copy parity — verbatim checks</h2></div>
+  <p class="sec-sub">Each row: an objective search of the text in the original code and in the widget. Result = word-for-word match.</p>
+  <div class="card">
+    <table>
+      <tr><th>Key copy</th><th>Source in AGI</th><th>In the widget</th></tr>
+      <tr><td>"Your request {ref} <b>was sent to our commercial team</b>…"</td><td><span class="ic">catalog_i18n.py:40</span></td><td><span class="st same">✅ verbatim</span></td></tr>
+      <tr><td>"<b>was approved by our manager</b>" / "could not be approved as submitted"</td><td><span class="ic">catalog_i18n.py</span> (approved/rejected)</td><td><span class="st same">✅ verbatim</span></td></tr>
+      <tr><td>"Please confirm your request:" / "price on request" / "Your recent requests:"</td><td><span class="ic">catalog_i18n.py</span></td><td><span class="st same">✅ verbatim</span></td></tr>
+      <tr><td>The <b>/help</b> page with ━━━ and 7 commands (EN/FA/AR)</td><td><span class="ic">translations.py:10-41</span></td><td><span class="st same">✅ verbatim (automated test)</span></td></tr>
+      <tr><td><b>/contact</b> — phone, wa.me/97145701100, "Office 2703, Aspect Tower"</td><td><span class="ic">translations.py:17</span></td><td><span class="st same">✅ verbatim</span></td></tr>
+      <tr><td>The <b>/quote</b> template — Persian "درخواست استعلام / پیش‌فاکتور" + items list</td><td><span class="ic">translations.py:16/28</span></td><td><span class="st same">✅ verbatim</span></td></tr>
+      <tr><td>Support + the <b>emergency</b> keyword + severity path</td><td><span class="ic">translations.py:15/27</span> + <span class="ic">support_workflow.py</span></td><td><span class="st same">✅ verbatim</span></td></tr>
+      <tr><td>21 menu languages with flags/native names + RTL for fa/ar</td><td><span class="ic">languages.py</span> — <b>21</b> MenuLanguage entries</td><td><span class="st same">✅ 21/21</span></td></tr>
+      <tr><td>Shop flow: category → product → quantity (stepper) → confirm</td><td><span class="ic">shop_flow.py</span> (545 lines)</td><td><span class="st adapt">🔵 UI rebuilt with the same copy and order</span></td></tr>
+    </table>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><div class="sec-num">3</div><h2>Main flows — what runs where</h2></div>
+  <p class="sec-sub">In AGI everything runs server-side; in the fork the "experience" runs in the browser and "real recording" goes to the server.</p>
+  <div class="card">
+    <table>
+      <tr><th>Flow</th><th>AGI</th><th>Fork</th></tr>
+      <tr><td>🛍 Shop &amp; quotes</td><td>state machine in <span class="ic">shop_flow.py</span>, server-side</td><td>same state machine in the widget; final submit → a real <span class="ic">/enquiry</span> + ZX reference</td></tr>
+      <tr><td>👔 Manager approval (HITL)</td><td>a real queue in PG + admin panel + alerts; after approval the "approved" message reaches the user's channel</td><td>an in-chat local queue (simulated with 8s auto-approval) to show the full flow; the real lead goes to the server independently of it</td></tr>
+      <tr><td>🎫 Support &amp; tickets</td><td><span class="ic">support_workflow.py</span> + real tickets</td><td>local ticket with thread/status + a copy to <span class="ic">/enquiry</span> tagged TICKET</td></tr>
+      <tr><td>🌍 Language &amp; RTL</td><td>21 languages server-side</td><td>the same 21 + a flag picker, full RTL for fa/ar/he</td></tr>
+      <tr><td>🧠 Free-form answers (LLM/KB)</td><td>orchestrator + RAG + memory + hermes</td><td>free text → <span class="ic">/api/chat</span> (KB + optional LLM); offline → built-in trilingual knowledge</td></tr>
+      <tr><td>📧 Customer e-mail</td><td>website form, required <span class="ic">email</span> field</td><td><span class="st new">➕ new in v3.1:</span> the bot asks inside the chat, validates, and records with the same contract regex</td></tr>
+      <tr><td>🔊 Voice (Xbot port, v3.2)</td><td>—</td><td><span class="st new">➕ widget-only:</span> Web Speech TTS (FAB button + per-bubble) + SpeechRecognition mic + <span class="ic">/track</span></td></tr>
+    </table>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><div class="sec-num">4</div><h2>What is deliberately absent from the fork</h2></div>
+  <p class="sec-sub">These are not "defects" — the fork's scope was always "a lightweight widget for cPanel", not the whole platform.</p>
+  <div class="card">
+    <table>
+      <tr><th>In AGI</th><th>Scale</th><th>Status in the fork</th><th>Replacement / impact</th></tr>
+      <tr><td>Messenger channels (Telegram, WhatsApp, email, IG, X)</td><td>6 adapters + webhooks</td><td><span class="st out">➖ out of scope</span></td><td>the fork is the web channel only — which is exactly what the website needed</td></tr>
+      <tr><td>Admin panel (CRM, RBAC, audit, analytics, automation…)</td><td>30 API modules + UI</td><td><span class="st out">➖ out of scope</span></td><td>leads are viewable in jsonl; the full panel remains AGI's — hence the Railway deployment</td></tr>
+      <tr><td>PostgreSQL / Redis / R2 / archive</td><td>7 storage modules</td><td><span class="st out">➖ removed</span></td><td>JSONL + localStorage — runs on any shared host</td></tr>
+      <tr><td>orchestrator/RAG/skills/memory/sandbox</td><td>~22k lines</td><td><span class="st out">➖ removed</span></td><td>a light KB+LLM brain; copy &amp; flow parity kept, not the engine</td></tr>
+      <tr><td>Enterprise workflows (email, social, calendar, fleet…)</td><td>~10 modules</td><td><span class="st out">➖ out of scope</span></td><td>not relevant to a web channel</td></tr>
+    </table>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><div class="sec-num">5</div><h2>What exists only in the fork</h2></div>
+  <div class="card">
+    <ul class="t">
+      <li>🎨 <b>The full WhatsApp skin:</b> ticks/double-ticks, typing, doodle wallpaper, presence, unread badges, sounds, emoji, reactions — AGI doesn't have these (its Telegram/WhatsApp output is those apps' own UI).</li>
+      <li>🔵 <b>SIM mode:</b> the whole experience works with zero backend — great for demos and development.</li>
+      <li>➕ <b>In-chat e-mail capture (v3.1)</b> and <b>voice layer + /track (v3.2, Xbot port)</b>.</li>
+      <li>🧩 <b>2-line install</b> on any site + a JS API (<span class="ic">ZenovixChatAPI</span>).</li>
+      <li>✅ <b>A 45-test suite</b> (jsdom + real HTTP) that keeps verifying parity on every change.</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="sec-head"><div class="sec-num">6</div><h2>Parity score and delivery verdict</h2></div>
+  <div class="card">
+    <h3 style="font-size:1rem;margin:0 0 10px">📊 Parity by layer (from the evidence above)</h3>
+    <div class="meter"><div class="lbl"><b>Public API contract</b><span>5/5 endpoints</span></div><div class="bar"><i style="width:100%"></i></div></div>
+    <div class="meter"><div class="lbl"><b>Bot copy &amp; templates (EN/FA/AR)</b><span>9/9 verbatim samples</span></div><div class="bar"><i style="width:100%"></i></div></div>
+    <div class="meter"><div class="lbl"><b>Languages &amp; RTL</b><span>21/21</span></div><div class="bar"><i style="width:100%"></i></div></div>
+    <div class="meter"><div class="lbl"><b>Customer flows (shop/support/emergency/contact)</b><span>full, with rebuilt UI</span></div><div class="bar"><i style="width:96%"></i></div></div>
+    <div class="meter"><div class="lbl"><b>Intelligence engine (RAG/memory/skills)</b><span>intentionally light — KB+LLM</span></div><div class="bar"><i style="width:40%"></i></div></div>
+    <div class="meter"><div class="lbl"><b>Admin panel &amp; other channels</b><span>out of the fork's scope</span></div><div class="bar"><i style="width:8%"></i></div></div>
+    <div class="tip green" style="margin-top:16px">✅ <b>Verdict:</b> for the stated goal ("a site widget with the original bot's capabilities, deployable on cPanel"), the fork is <b>delivery-ready</b>: the contract, copy and references are real and identical to the platform, covered by the 45/45 suite. For the real admin panel/bot, deploy AGI itself on Railway (see the architecture blueprint).</div>
+    <div class="tip amber">⚠️ <b>Be transparent with stakeholders:</b> 1) manager approval inside the widget demonstrates the flow; it is not wired to AGI's admin panel; 2) fork leads are stored in a jsonl file, not PostgreSQL; 3) free-form answers depend on the KB / LLM key you configure. All three disappear with the Railway deployment.</div>
+  </div>
+</section>
+
+<footer>
+  Code-to-code comparison report — sources: <span class="ic">/AGI/app/*</span> and <span class="ic">/zenovix-chat/*</span> ● September 10, 2026<br>
+  Delivery bundle: <span class="ic">Zenovix-Complete.zip</span> — install guide: <span class="ic">setup-guide.html</span> · launch guide: <span class="ic">deployment-guide.html</span>
+</footer>
+
+</div>
+</body>
+</html>

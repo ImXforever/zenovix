@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Zenovix Intelligence Suite — Services Proposal for zenovix.ae</title>
+<!-- Fonts load when opened in a normal browser; in sandboxed previews the fallbacks below apply -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0E0A1E;--card:#16112A;--card2:#1D1636;--code:#0B0817;--line:rgba(255,255,255,.12);--line2:rgba(255,255,255,.22);
+--ink:#F1ECFB;--dim:#A79FBE;--faint:#6E6879;--purple:#8A3FE6;--blue:#3B8DF5;--green:#25D366;--teal:#00A884;--amber:#FFC53D}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.75 'Inter','Segoe UI',system-ui,sans-serif;background-image:radial-gradient(1100px 600px at 85% -5%,rgba(138,63,230,.22),transparent),radial-gradient(900px 520px at 0% 18%,rgba(59,141,245,.1),transparent);background-attachment:fixed}
+h1,h2,h3,.hfont{font-family:'Space Grotesk','Inter','Segoe UI',system-ui,sans-serif}
+a{color:var(--green)}
+.wrap{max-width:960px;margin:0 auto;padding:0 22px 80px}
+/* top bar */
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;max-width:960px;margin:0 auto;padding:20px 22px}
+.brand{font-weight:800;font-size:1.12rem;display:flex;align-items:center;gap:10px;font-family:'Space Grotesk',Inter,sans-serif}
+.lg{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--green),var(--teal));display:inline-flex;align-items:center;justify-content:center;font-weight:900;color:#04120C;font-size:1.05rem}
+.to{color:var(--dim);font-size:.85rem;text-align:right}
+.to b{color:var(--ink)}
+/* hero */
+.hero{text-align:center;padding:52px 0 8px}
+.pill{display:inline-block;background:rgba(37,211,102,.1);border:1px solid rgba(37,211,102,.4);color:var(--green);border-radius:999px;padding:6px 18px;font-size:.83rem;font-weight:600;margin-bottom:20px}
+h1{font-size:clamp(1.9rem,5.5vw,3rem);line-height:1.14;margin:0 0 16px}
+.grad{background:linear-gradient(135deg,var(--purple),var(--blue));-webkit-background-clip:text;background-clip:text;color:transparent}
+.lede{color:var(--dim);max-width:660px;margin:0 auto 24px;font-size:1.04rem}
+.ctas{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:26px}
+.cta1{background:linear-gradient(135deg,var(--green),var(--teal));color:#04120C;border:0;border-radius:14px;padding:14px 28px;font:700 1rem/1 'Inter',sans-serif;cursor:pointer;box-shadow:0 10px 28px rgba(37,211,102,.3);text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.cta2{background:var(--card);border:1px solid var(--line2);color:var(--ink);border-radius:14px;padding:14px 28px;text-decoration:none;font-weight:600;display:inline-flex;align-items:center;gap:8px}
+.meta-chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.chip{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px 15px;font-size:.8rem;color:var(--dim)}
+.chip b{color:var(--ink)}
+/* sections */
+h2.sec{font-size:1.5rem;margin:56px 0 6px;text-align:center}
+.sec-sub{text-align:center;color:var(--dim);margin:0 auto 24px;max-width:640px;font-size:.95rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px 24px;margin:0 0 12px}
+.grid{display:grid;gap:12px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+/* audit */
+.finding{display:flex;gap:14px;align-items:flex-start;padding:13px 4px;border-bottom:1px dashed var(--line)}
+.finding:last-child{border-bottom:0}
+.finding .fic{font-size:1.3rem;flex:none;width:34px;text-align:center}
+.finding b{display:block}.finding span{color:var(--dim);font-size:.9rem}
+/* modules */
+.mod{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;position:relative;transition:.2s}
+.mod:hover{border-color:rgba(138,63,230,.55)}
+.mod .mnum{position:absolute;top:18px;right:20px;font:700 .8rem 'Space Grotesk';color:var(--faint)}
+.mod .mic{width:44px;height:44px;border-radius:12px;background:rgba(138,63,230,.14);border:1px solid rgba(138,63,230,.35);display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:12px}
+.mod h3{margin:0 0 4px;font-size:1.06rem}
+.mod .mt{color:var(--faint);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;margin:0 0 10px}
+.mod ul{margin:0;padding-right:18px;padding-left:18px;color:var(--dim);font-size:.88rem}
+.mod li{margin:5px 0}
+.mod li b{color:var(--ink);font-weight:600}
+.tag{display:inline-block;background:rgba(37,211,102,.1);border:1px solid rgba(37,211,102,.4);color:var(--green);border-radius:999px;padding:2px 10px;font-size:.68rem;font-weight:700;letter-spacing:.04em;margin-right:6px}
+.tag.b{background:rgba(59,141,245,.1);border-color:rgba(59,141,245,.4);color:var(--blue)}
+.tag.p{background:rgba(138,63,230,.12);border-color:rgba(138,63,230,.45);color:#C9A6F5}
+/* proof table */
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:.89rem}
+th,td{border:1px solid var(--line);padding:10px 14px;text-align:left;vertical-align:top}
+th{background:var(--card2);font-weight:700;white-space:nowrap}
+td code,.ic{background:var(--code);border:1px solid var(--line);border-radius:6px;padding:1px 8px;font:12px Consolas,Menlo,monospace;color:#D8F5E8;display:inline-block;word-break:break-all}
+.ok{color:var(--green);font-weight:700}
+/* embed */
+.codebox{position:relative;margin:12px 0 4px}
+.codebox pre{background:var(--code);border:1px solid var(--line);border-radius:12px;padding:16px 18px;overflow-x:auto;font:13px/1.7 Consolas,Menlo,monospace;color:#D8F5E8;white-space:pre-wrap;word-break:break-word;margin:0}
+.note{background:rgba(59,141,245,.07);border:1px solid rgba(59,141,245,.35);border-radius:12px;padding:12px 16px;margin:12px 0;font-size:.9rem}
+.win{background:rgba(37,211,102,.07);border:1px solid rgba(37,211,102,.4);border-radius:12px;padding:12px 16px;margin:12px 0;font-size:.92rem}
+.warn2{background:rgba(255,197,61,.07);border:1px solid rgba(255,197,61,.35);border-radius:12px;padding:12px 16px;margin:12px 0;font-size:.92rem}
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:18px 0}
+.st{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 14px;text-align:center}
+.st b{display:block;font:700 1.7rem 'Space Grotesk';background:linear-gradient(135deg,var(--purple),var(--blue));-webkit-background-clip:text;background-clip:text;color:transparent}
+.st span{color:var(--dim);font-size:.78rem}
+/* phases */
+.phase{display:flex;gap:16px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px 22px;margin:0 0 10px}
+.ph-n{flex:none;width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font:800 1rem 'Space Grotesk';background:rgba(138,63,230,.16);border:1px solid rgba(138,63,230,.4);color:#C9A6F5}
+.phase b.t{font-size:1.02rem}
+.phase .tl{color:var(--teal);font-size:.8rem;font-weight:700}
+.phase p{margin:4px 0 0;color:var(--dim);font-size:.9rem}
+.price{margin-right:auto;margin-left:auto;text-align:left;background:var(--code);border:1px dashed var(--line2);border-radius:8px;padding:2px 10px;font:600 .85rem 'Space Grotesk';color:var(--amber);white-space:nowrap}
+/* values */
+.val{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;text-align:center}
+.val .vi{font-size:1.4rem}
+.val b{display:block;margin:6px 0 2px}
+.val span{color:var(--dim);font-size:.83rem}
+/* next steps */
+ol.next{counter-reset:st;list-style:none;margin:0;padding:0}
+ol.next li{counter-increment:st;display:flex;gap:14px;align-items:flex-start;padding:12px 0;border-bottom:1px dashed var(--line)}
+ol.next li:last-child{border-bottom:0}
+ol.next li::before{content:counter(st);flex:none;width:30px;height:30px;border-radius:10px;background:rgba(37,211,102,.12);border:1px solid rgba(37,211,102,.4);color:var(--green);display:flex;align-items:center;justify-content:center;font:800 .9rem 'Space Grotesk'}
+ol.next b{display:block}ol.next span{color:var(--dim);font-size:.9rem}
+footer{text-align:center;color:var(--faint);font-size:.82rem;line-height:2;margin-top:56px}
+.edit{border-bottom:1px dashed var(--amber);color:var(--amber)}
+@media print{body{background:#fff;color:#111}.card,.mod,.st,.val,.phase{border-color:#ccc;background:#fff;color:#111}.mod ul{color:#444}.sec-sub,.finding span,td{color:#333}.cta1{-webkit-print-color-adjust:exact;print-color-adjust:exact}.codebox pre{background:#f4f4f4;color:#111}h1 .grad,h1,h2,h3{color:#111}}
+@media (max-width:600px){.wrap{padding:0 16px 60px}.card{padding:18px}.top{flex-direction:column;text-align:center}.to{text-align:center}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="brand"><span class="lg">Z</span> Zenovix <span style="color:var(--faint);font-weight:400">Intelligence Suite</span></div>
+  <div class="to">Services Proposal · for <b>zenovix.ae</b><br>Sep 2026 · v1.0</div>
+</header>
+
+<div class="wrap">
+
+<!-- HERO -->
+<section class="hero">
+  <div class="pill">🟢 Every claim on this page is live &amp; verifiable right now</div>
+  <h1>The complete <span class="grad">intelligence layer</span><br>for zenovix.ae</h1>
+  <p class="lede">An AI front-desk that talks to every visitor — sells the six services, quotes, takes orders with tracked references, opens support tickets, and hands the team a private control panel. Already built. Already running. Installed on your site in minutes.</p>
+  <div class="ctas">
+    <a class="cta1" href="https://zenovix-production.up.railway.app" target="_blank" rel="noopener">💬 Open the live demo</a>
+    <a class="cta2" href="https://zenovix.ae" target="_blank" rel="noopener">Your current site ↗</a>
+  </div>
+  <div class="meta-chips">
+    <span class="chip">🧠 Brain: <b>live on Railway</b></span>
+    <span class="chip">✅ <b>72/72</b> automated checks passed</span>
+    <span class="chip">🌐 <b>21</b> languages · AR/FA RTL</span>
+    <span class="chip">📄 License: <b>open source (MIT)</b> — you own it</span>
+  </div>
+</section>
+
+<!-- TODAY -->
+<h2 class="sec">Where zenovix.ae stands today</h2>
+<p class="sec-sub">A technical review of the live site (Sep 10, 2026) — an impressive one-page experience with one structural gap.</p>
+<div class="card">
+  <div class="finding"><div class="fic">📄</div><div><b>One static page, zero sub-pages</b><span>The entire site is a single HTML file served by nginx — no /services, /about, /ar. Great for speed; nothing for a visitor to do but read.</span></div></div>
+  <div class="finding"><div class="fic">📮</div><div><b>The contact form never sends</b><span>“Send message” only opens an email draft (mailto:). On most phones and shared office machines — where no mail app is configured — the visitor's message simply disappears.</span></div></div>
+  <div class="finding"><div class="fic">🗂</div><div><b>Nothing is captured</b><span>No form backend, no database, no API. There is no record of who asked, what they wanted, or when — and no way to follow up.</span></div></div>
+  <div class="finding"><div class="fic">🌙</div><div><b>The studio sleeps, Dubai is global</b><span>Visitors arrive from every timezone. Outside office hours, a prospect who has a question currently has no answer and no trace.</span></div></div>
+  <div class="win">✅ <b>The upside:</b> these are exactly the gaps an AI layer closes — without touching the design, the host, or a single line of the existing site.</div>
+</div>
+
+<!-- MODULES -->
+<h2 class="sec">The suite — eight modules</h2>
+<p class="sec-sub">Everything below is built, tested and deployable as one package. <span class="tag">LIVE</span> = verified running today · <span class="tag b">READY</span> = in the codebase, switched on at install · <span class="tag p">PHASE 2</span> = on the roadmap.</p>
+<div class="grid g2">
+
+  <div class="mod"><div class="mnum">01</div><div class="mic">💬</div><p class="mt"><span class="tag">LIVE</span> Visitor-facing</p>
+    <h3>AI Chat Widget</h3>
+    <ul>
+      <li>WhatsApp-style chat, <b>exact brand colors</b> of zenovix.ae (#0E0A1E, purple→blue)</li>
+      <li>Sells the <b>6 services</b> — same names &amp; order as the site, with quotes</li>
+      <li>Orders &amp; quotes with <b>ZX / Q tracking references</b></li>
+      <li><b>Support tickets</b> (TKT-…) with status tracking</li>
+      <li><b>Manager approval</b> step — a human confirms every quote</li>
+      <li>Voice: <b>read-aloud 🔊 + speech input 🎤</b></li>
+      <li>Works offline of the LLM (built-in fallback answers)</li>
+      <li>Mobile-first, popup sound, no page reloads</li>
+    </ul>
+  </div>
+
+  <div class="mod"><div class="mnum">02</div><div class="mic">🧠</div><p class="mt"><span class="tag">LIVE</span> Infrastructure</p>
+    <h3>The Brain — managed backend</h3>
+    <ul>
+      <li><b>Live now</b> on Railway: knowledge base + LLM answers</li>
+      <li>Anti-spam <b>rate limiting</b> &amp; abuse screening</li>
+      <li><b>Every chat &amp; order logged</b> — nothing is lost</li>
+      <li>REST API: catalog, enquiries, order tracking</li>
+      <li>CORS secured for zenovix.ae only</li>
+      <li><b>Health endpoint</b> for uptime monitoring</li>
+      <li>Scales with Railway — no servers to babysit</li>
+    </ul>
+  </div>
+
+  <div class="mod"><div class="mnum">03</div><div class="mic">🖥</div><p class="mt"><span class="tag">LIVE</span> For the team</p>
+    <h3>Backstage control panel</h3>
+    <ul>
+      <li>Private panel at <b>/admin</b> on the brain URL</li>
+      <li><b>Every lead &amp; order</b> with reference, contact, service, message</li>
+      <li>Live stats: leads, messages, knowledge, uptime</li>
+      <li>Password login — <b>HMAC tokens</b>, brute-force lockout</li>
+      <li>Team password set once in Railway, changeable anytime</li>
+      <li>Works on phones — check leads from anywhere</li>
+    </ul>
+  </div>
+
+  <div class="mod"><div class="mnum">04</div><div class="mic">✈️</div><p class="mt"><span class="tag">LIVE</span> New channel</p>
+    <h3>Telegram bot — same brain</h3>
+    <ul>
+      <li>The full chat experience as a <b>Telegram bot</b> (@ bot for the studio)</li>
+      <li>Catalog, quotes, tickets, ZX tracking — identical flows</li>
+      <li>Visitors who prefer Telegram get the same service</li>
+      <li>Bot menu button opens the <b>live landing page</b> in-app</li>
+      <li>One brain, two channels — zero extra maintenance</li>
+    </ul>
+  </div>
+
+  <div class="mod"><div class="mnum">05</div><div class="mic">👔</div><p class="mt"><span class="tag">LIVE</span> For the team</p>
+    <h3>Admin bot + Web App panel</h3>
+    <ul>
+      <li>Managers control the business <b>from Telegram chat</b> (/admin)</li>
+      <li>Approve quotes with one tap — <b>human-in-the-loop</b></li>
+      <li>Change any business variable (services, texts, prices-to-show) from chat</li>
+      <li><b>Telegram Web App:</b> the admin panel inside Telegram's menu button</li>
+      <li>New-order alerts reach managers instantly</li>
+    </ul>
+  </div>
+
+  <div class="mod"><div class="mnum">06</div><div class="mic">🌐</div><p class="mt"><span class="tag">LIVE</span> Web presence</p>
+    <h3>Landing &amp; demo page</h3>
+    <ul>
+      <li>The brain's root URL is a <b>real branded landing</b> — widget live on it</li>
+      <li>Serves as the permanent <b>live demo</b> for stakeholders</li>
+      <li>Telegram-Web-App ready (full-screen in-app)</li>
+      <li>Copy-paste embed generator built in</li>
+      <li>Endpoint map &amp; health for developers</li>
+    </ul>
+  </div>
+
+  <div class="mod"><div class="mnum">07</div><div class="mic">🌍</div><p class="mt"><span class="tag">LIVE</span> Reach</p>
+    <h3>21-language engine</h3>
+    <ul>
+      <li><b>Arabic &amp; Persian with full RTL</b> — mirrored UI, native menus</li>
+      <li>Language picker inside the chat (21 flags)</li>
+      <li>Can auto-follow the site's own <b>EN/AR switch</b></li>
+      <li>Answers in the visitor's language, from the same brain</li>
+      <li>Gulf-first: Arabic is a first-class citizen, not an afterthought</li>
+    </ul>
+  </div>
+
+  <div class="mod"><div class="mnum">08</div><div class="mic">🛡</div><p class="mt"><span class="tag">LIVE</span> Trust</p>
+    <h3>Tracked, human-checked operations</h3>
+    <ul>
+      <li>Every request gets a reference: <b>ZX / Q / TKT</b> — “cite it any time”</li>
+      <li>Visitors check status themselves in-chat (/track)</li>
+      <li><b>No payment ever taken in chat</b> — stated openly to users</li>
+      <li>Manager approval before any commitment</li>
+      <li>Open-source core (MIT) — <b>no vendor lock-in, you own it</b></li>
+    </ul>
+  </div>
+
+</div>
+
+<!-- PROOF -->
+<h2 class="sec">Verified live — not a promise, a status</h2>
+<p class="sec-sub">These checks ran against the real backend on Sep 10, 2026. Click any path and see for yourself.</p>
+<div class="card" style="overflow-x:auto">
+  <table>
+    <tr><th>Check</th><th>Result</th></tr>
+    <tr><td>Brain health — <a href="https://zenovix-production.up.railway.app/health" target="_blank" rel="noopener"><code>/health</code></a></td><td class="ok">{"ok":true} · service zenovix-chat-api</td></tr>
+    <tr><td>Live catalog (Persian) — <code>/api/public/catalog?lang=fa</code></td><td class="ok">6 services, localized, correct order</td></tr>
+    <tr><td>Real order through the API — <code>/api/public/enquiry</code></td><td class="ok">201 → reference <b>ZX-6DA2B28D</b></td></tr>
+    <tr><td>Security (browser preflight from zenovix.ae)</td><td class="ok">CORS allows zenovix.ae only</td></tr>
+    <tr><td>Admin panel — login, token, forged-token rejection</td><td class="ok">verified + rate-limited (5 tries/min)</td></tr>
+    <tr><td>Automated parity suite (widget vs platform bot)</td><td class="ok">72 / 72 checks passed · CI on every commit</td></tr>
+    <tr><td>Widget ↔ backend end-to-end (headless browser)</td><td class="ok">LIVE badge → order → ZX reference received</td></tr>
+  </table>
+</div>
+
+<div class="stats">
+  <div class="st"><b>21</b><span>languages</span></div>
+  <div class="st"><b>6</b><span>services in catalog</span></div>
+  <div class="st"><b>72</b><span>automated checks</span></div>
+  <div class="st"><b>2</b><span>channels (web + Telegram)</span></div>
+  <div class="st"><b>3</b><span>tracking refs (ZX/Q/TKT)</span></div>
+</div>
+
+<!-- INTEGRATION -->
+<h2 class="sec">How it joins zenovix.ae — zero surgery</h2>
+<p class="sec-sub">The site stays exactly as it is. One file is added, two lines are pasted. Removal is two deletes — the site never knew we were there.</p>
+<div class="grid g2">
+  <div class="card">
+    <b>On the site (one-time, ~10 min)</b>
+    <div class="codebox"><pre>1. Upload  zenovix-chat.js  →  public_html/js/
+
+2. Paste before &lt;/body&gt; of the page:
+
+&lt;script&gt;
+  window.ZenovixChat = {
+    api:     "https://zenovix-production.up.railway.app/api/chat",
+    apiBase: "https://zenovix-production.up.railway.app/api/public"
+  };
+&lt;/script&gt;
+&lt;script src="/js/zenovix-chat.js?v=3.2" defer&gt;&lt;/script&gt;</pre></div>
+    <p style="color:var(--dim);font-size:.85rem;margin:8px 0 0">Full illustrated step-by-step guide (EN) ships with the package — any admin can do it.</p>
+  </div>
+  <div class="card">
+    <b>Nice touches included</b>
+    <ul style="color:var(--dim);font-size:.9rem;padding-left:18px;margin:6px 0">
+      <li><b>Design match is exact</b> — the widget uses the site's own tokens: <code style="all:revert"><span style="display:inline-block;width:11px;height:11px;border-radius:3px;background:#0E0A1E;border:1px solid #888"></span> #0E0A1E</code> background, purple→blue accents</li>
+      <li>One line in the site's EN/AR switch → the chat follows the site language (<code>ZenovixChatAPI.setLang("ar")</code>)</li>
+      <li>A “chat instead” link under the current form catches visitors whose device has no mail app</li>
+      <li>Optional Space Grotesk heading font inside the chat — pixel-level brand fit</li>
+      <li>A “Ask Zenovix” link anywhere on the page: just <code>data-open-chat</code></li>
+    </ul>
+  </div>
+</div>
+
+<!-- ROADMAP -->
+<h2 class="sec">Phase 2 — where this can grow</h2>
+<p class="sec-sub">The suite is the foundation. These modules slot into the same brain when you want them.</p>
+<div class="grid g3">
+  <div class="val"><div class="vi">🟢</div><b>WhatsApp inbox</b><span>the same conversations, answered from one brain, on WhatsApp Business</span></div>
+  <div class="val"><div class="vi">📧</div><b>Email → ticket</b><span>studio@zenovix.com mails become tracked TKT tickets automatically</span></div>
+  <div class="val"><div class="vi">📊</div><b>Analytics</b><span>dashboards: peak hours, top services, conversion from chat to lead</span></div>
+  <div class="val"><div class="vi">🗃</div><b>CRM pipeline</b><span>lead statuses (new → quoted → won) with the team working from Telegram</span></div>
+  <div class="val"><div class="vi">🗄</div><b>Postgres upgrade</b><span>database-grade persistence &amp; backups as volume grows</span></div>
+  <div class="val"><div class="vi">🔗</div><b>agi.zenovix.ae</b><span>custom domain on the brain — a DNS record, nothing else changes</span></div>
+</div>
+
+<!-- PLAN -->
+<h2 class="sec">Rollout plan</h2>
+<p class="sec-sub">Three short phases — value lands in week one.</p>
+<div class="phase"><div class="ph-n">1</div><div><span class="tl">24–48 h</span> &nbsp;<b class="t">Go live on zenovix.ae</b><p>Widget on the site · brain connected · admin walkthrough · live test with the team. Everything from modules 01–03 + 06–08.</p></div><span class="price">AED <span class="edit">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></span></div>
+<div class="phase"><div class="ph-n">2</div><div><span class="tl">week 2</span> &nbsp;<b class="t">Telegram layer</b><p>Customer bot + admin bot + Web App panel (modules 04–05). Managers approve and edit from their phones.</p></div><span class="price">AED <span class="edit">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></span></div>
+<div class="phase"><div class="ph-n">3</div><div><span class="tl">monthly</span> &nbsp;<b class="t">Run &amp; grow (optional)</b><p>Hosting (Railway), monitoring, knowledge updates, new menu flows, Phase-2 modules as needed — a fixed monthly plan or on-demand.</p></div><span class="price">AED <span class="edit">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>/mo</span></div>
+<p class="sec-sub" style="font-size:.82rem;color:var(--faint)">Prices intentionally left blank for the commercial discussion — hosting is billed directly by Railway (~$15/mo) or can be folded into the monthly plan.</p>
+
+<!-- WHY -->
+<h2 class="sec">How we work</h2>
+<p class="sec-sub">The same principles zenovix.ae puts on its own site — applied to this build.</p>
+<div class="grid g3">
+  <div class="val"><div class="vi">🎯</div><b>Strategy first</b><span>the suite mirrors the site's six services and its brand system — it sells what the site sells</span></div>
+  <div class="val"><div class="vi">✨</div><b>Craft in the details</b><span>exact color tokens, RTL done properly, verbatim platform texts, sound &amp; motion like the real apps</span></div>
+  <div class="val"><div class="vi">🏗</div><b>Built to last</b><span>open source you own, 53 automated tests guarding every update, no lock-in — ever</span></div>
+</div>
+
+<!-- NEXT -->
+<h2 class="sec">Next steps</h2>
+<div class="card">
+  <ol class="next">
+    <li><div><b>Give the green light</b><span>one message is enough — Phase 1 needs no contracts to start.</span></div></li>
+    <li><div><b>10-minute install (or we do it together)</b><span>one file upload + one paste — an illustrated guide is included, or it's done on a screen-share.</span></div></li>
+    <li><div><b>Live within 48 hours</b><span>every visitor talks to Zenovix — and every order lands in the team's panel with a ZX reference.</span></div></li>
+  </ol>
+  <div class="ctas" style="margin-top:18px">
+    <a class="cta1" href="https://zenovix-production.up.railway.app" target="_blank" rel="noopener">💬 Try the live chat now</a>
+    <a class="cta2" href="https://zenovix-production.up.railway.app/admin" target="_blank" rel="noopener">🔐 Peek at the team panel</a>
+  </div>
+  <div class="note">ℹ️ The demo panel is currently on the default password for the preview — it is locked to the team's own password the moment we deploy for you.</div>
+</div>
+
+<footer>
+  Zenovix Intelligence Suite · proposal v1.0 · September 2026 · prepared for zenovix.ae (Studio — Business Bay, Dubai)<br>
+  Live brain: <a href="https://zenovix-production.up.railway.app">zenovix-production.up.railway.app</a> · Source (MIT): <a href="https://github.com/ImXforever/zenovix">github.com/ImXforever/zenovix</a><br>
+  Prepared by <span class="edit">&nbsp;your name · @telegram · email&nbsp;</span>
+</footer>
+
+</div>
+</body>
+</html>

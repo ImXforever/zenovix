@@ -1,0 +1,99 @@
+{
+  "company": {
+    "name": "Zenovix",
+    "tagline": "AI & Digital Technology",
+    "hq": "Office 2703, Aspect Tower, Business Bay, Dubai, UAE",
+    "email": "studio@zenovix.com",
+    "phone": "+971 4570 1100",
+    "whatsapp": "https://wa.me/97145701100",
+    "hours": "Monday to Friday, 09:00-18:00 (Gulf Standard Time)",
+    "languages": "English and Arabic (EN/AR), full RTL support",
+    "website": "https://zenovix.ae"
+  },
+  "suggestions": [
+    "What services do you offer?",
+    "Can you build an AI agent for WhatsApp?",
+    "Do you make bilingual EN/AR websites?",
+    "How do I start a project?"
+  ],
+  "entries": [
+    {
+      "id": "services",
+      "q": ["services", "what do you offer", "what do you do", "solutions", "what is zenovix", "خدمات"],
+      "a": "Zenovix covers six areas end to end: 1) Artificial Intelligence, 2) Cloud & ICT, 3) Web & Mobile, 4) Intelligent Automation, 5) Data & Analytics, 6) Animation & 3D. One partner for strategy, design, engineering and the AI that ties it together. Which one can I tell you more about?",
+      "source": "zenovix.ae — Services"
+    },
+    {
+      "id": "ai",
+      "q": ["artificial intelligence", "ai", "machine learning", "chatbot", "computer vision", "models", "llm", "hosh masnuai"],
+      "a": "Our Artificial Intelligence practice ships custom models, computer vision and conversational AI trained on your data and deployed production-ready — assistants and chatbots on your own knowledge, document understanding, and forecasting models that are deployed and monitored.",
+      "source": "zenovix.ae — Artificial Intelligence"
+    },
+    {
+      "id": "cloud",
+      "q": ["cloud", "ict", "infrastructure", "hosting", "devops", "migration", "network", "security hardening"],
+      "a": "Cloud & ICT at Zenovix: secure infrastructure, networks and systems integration engineered for scale — cloud architecture and migration, DevOps with CI/CD and observability, identity, security hardening and backup.",
+      "source": "zenovix.ae — Cloud & ICT"
+    },
+    {
+      "id": "web",
+      "q": ["website", "web", "mobile", "app", "android", "ios", "ecommerce", "landing page", "bilingual", "arabic", "rtl", "site"],
+      "a": "Yes — we build fast, beautiful websites and apps, bilingual EN/AR ready with full RTL support: corporate sites, landing pages, e-commerce, iOS and Android apps, plus motion and performance work that converts.",
+      "source": "zenovix.ae — Web & Mobile"
+    },
+    {
+      "id": "automation",
+      "q": ["automation", "agent", "agents", "whatsapp bot", "telegram bot", "workflow", "integration", "crm", "erp"],
+      "a": "Our Intelligent Automation team builds AI agents and workflow automation on WhatsApp, Telegram, e-mail and the web — with human-in-the-loop approvals for anything sensitive, and CRM / ERP / messaging integrations so your team focuses on judgement, not friction.",
+      "source": "zenovix.ae — Intelligent Automation"
+    },
+    {
+      "id": "data",
+      "q": ["data", "analytics", "dashboard", "bi", "reporting", "etl", "warehouse", "pipeline"],
+      "a": "Data & Analytics: dashboards and pipelines that turn raw numbers into decisions — data warehousing and ETL, BI dashboards and KPI reporting, plus data quality and governance.",
+      "source": "zenovix.ae — Data & Analytics"
+    },
+    {
+      "id": "3d",
+      "q": ["animation", "3d", "video", "motion", "brand film", "render", "cgi"],
+      "a": "Animation & 3D: brand films and explainer animation, AI-generated video and motion graphics, and 3D product visualisation including interactive web 3D — the story your technology deserves.",
+      "source": "zenovix.ae — Animation & 3D"
+    },
+    {
+      "id": "start",
+      "q": ["start a project", "get started", "how to begin", "process", "hire you", "onboarding", "brief", "kick off"],
+      "a": "Starting is simple: send us a short brief through the contact form on zenovix.ae, e-mail studio@zenovix.com or WhatsApp +971 4570 1100. We understand the business first, then come back with a proposal — strategy before a single line of code.",
+      "source": "zenovix.ae — About"
+    },
+    {
+      "id": "contact",
+      "q": ["contact", "email", "phone", "call", "whatsapp", "reach you", "talk to a human", "manager", "sales"],
+      "a": "You can reach the studio at studio@zenovix.com, +971 4570 1100, or WhatsApp https://wa.me/97145701100 — we answer 09:00-18:00 Gulf Standard Time. Proposals and anything sensitive always go to a human manager.",
+      "source": "zenovix.ae — Contact"
+    },
+    {
+      "id": "location",
+      "q": ["where", "location", "office", "address", "dubai", "map", "visit"],
+      "a": "Our office is at Office 2703, Aspect Tower, Business Bay, Dubai, UAE. We're engineered in Dubai and delivered worldwide.",
+      "source": "zenovix.ae — Contact"
+    },
+    {
+      "id": "about",
+      "q": ["about", "who are you", "team", "company", "studio", "zenovix"],
+      "a": "Zenovix is a Dubai studio for the digital frontier — a team of engineers, designers and AI specialists building the systems modern businesses run on. We work like a partner, not a vendor: strategy first, craft in the details, built to last.",
+      "source": "zenovix.ae — About us"
+    },
+    {
+      "id": "pricing",
+      "q": ["price", "pricing", "cost", "how much", "quote", "budget", "rates", "estimate"],
+      "a": "Every project is scoped individually, so there are no public price lists. Tell us the shape of the project and we'll prepare a written proposal with a clear quote — usually after one short discovery call.",
+      "source": "Zenovix sales policy"
+    },
+    {
+      "id": "time",
+      "q": ["hours", "open", "working hours", "when do you reply", "response time", "availability"],
+      "a": "We work 09:00-18:00 Gulf Standard Time. The bot answers instantly; anything that needs a manager (quotes, contracts) is handed over and answered within business hours.",
+      "source": "Zenovix operations"
+    }
+  ]
+}

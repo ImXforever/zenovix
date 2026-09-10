@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Full Zenovix Deployment — Railway + cPanel (v3.2)</title>
+<style>
+:root{--bg:#0E0A1E;--card:#16112A;--card2:#1D1636;--code:#0B0817;--line:rgba(255,255,255,.12);--line2:rgba(255,255,255,.2);
+--ink:#F1ECFB;--dim:#A79FBE;--faint:#6E6879;--teal:#00A884;--green:#25D366;--purple:#8A3FE6;--amber:#FFC53D;--red:#FF6B6B;--blue:#4DA3FF}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:15.5px/1.75 Inter,"Segoe UI",system-ui,sans-serif;
+background-image:radial-gradient(1100px 600px at 85% -5%,rgba(138,63,230,.22),transparent),radial-gradient(900px 500px at 5% 15%,rgba(0,168,132,.12),transparent);background-attachment:fixed}
+.wrap{max-width:860px;margin:0 auto;padding:0 18px 90px}
+.hero{padding:46px 0 8px;text-align:center}
+.hero h1{font-size:clamp(1.5rem,4.2vw,2.1rem);margin:0 0 8px}
+.grad{background:linear-gradient(135deg,#25D366,#00A884);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.sub{color:var(--dim);margin:4px 0 16px}
+.badges{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:0 0 20px}
+.badge{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 14px;font-size:.8rem;color:var(--dim)}.badge b{color:var(--ink)}
+.bar-wrap{position:sticky;top:0;z-index:50;background:rgba(14,10,30,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);margin:22px -18px 26px;padding:10px 18px}
+.bar-row{max-width:860px;margin:0 auto;display:flex;align-items:center;gap:12px}
+.bar-track{flex:1;height:8px;border-radius:99px;background:var(--card2);overflow:hidden;border:1px solid var(--line)}
+.bar-fill{height:100%;width:0%;border-radius:99px;background:linear-gradient(90deg,#25D366,#00A884);transition:width .4s}
+.bar-text{font-size:.82rem;color:var(--dim);white-space:nowrap}.bar-text b{color:var(--green)}
+.toc{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:0 0 30px}
+.toc a{background:var(--card);border:1px solid var(--line);color:var(--dim);border-radius:999px;padding:7px 15px;font-size:.82rem;text-decoration:none;transition:.15s}
+.toc a:hover{border-color:var(--teal);color:var(--ink)}
+section{scroll-margin-top:86px;margin:0 0 30px}
+.sec-head{display:flex;align-items:center;gap:14px;margin:0 0 4px}
+.sec-num{min-width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.15rem;font-weight:800;background:linear-gradient(135deg,rgba(138,63,230,.35),rgba(0,168,132,.25));border:1px solid var(--line2)}
+.sec-head h2{font-size:1.24rem;margin:0}
+.sec-sub{color:var(--dim);font-size:.9rem;margin:2px 0 16px 84px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px 22px;margin:0 0 14px}
+.step{position:relative;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px 20px 18px 64px;margin:0 0 12px;transition:border-color .2s}
+.step.done{border-color:rgba(37,211,102,.55)}
+.step .chk{position:absolute;top:20px;left:18px;width:26px;height:26px;accent-color:#25D366;cursor:pointer}
+.step h3{margin:0 0 8px;font-size:1.02rem;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.step .sn{display:inline-flex;align-items:center;justify-content:center;min-width:26px;height:26px;padding:0 6px;border-radius:9px;background:rgba(0,168,132,.16);color:var(--green);font-size:.86rem;font-weight:800;border:1px solid rgba(0,168,132,.4)}
+.step p{margin:7px 0}
+.small,p.small{color:var(--dim);font-size:.86rem}
+.step ul{margin:6px 0;padding-left:20px;color:var(--dim)}.step ul li{margin:3px 0}.step ul li b{color:var(--ink)}
+ol.steps{margin:6px 0;padding-left:22px;color:var(--dim)}ol.steps li{margin:6px 0}ol.steps b{color:var(--ink)}
+kbd{background:var(--card2);border:1px solid var(--line2);border-bottom-width:2px;border-radius:6px;padding:1px 8px;font-size:.82rem;display:inline-block}
+.code{position:relative;margin:12px 0 4px}
+.code pre{background:var(--code);border:1px solid var(--line);border-radius:12px;padding:14px 16px;overflow-x:auto;font:13px/1.7 Consolas,Menlo,"Courier New",monospace;color:#D8F5E8;margin:0;white-space:pre-wrap;word-break:break-word}
+.copy{position:absolute;top:8px;right:8px;background:var(--card2);border:1px solid var(--line2);color:var(--dim);border-radius:8px;padding:4px 12px;font:600 .74rem/1.6 inherit;cursor:pointer;transition:.15s}
+.copy:hover{border-color:var(--teal);color:var(--ink)}.copy.ok{border-color:var(--green);color:var(--green)}
+.tip,.warn,.danger,.win{border-radius:12px;padding:11px 15px;margin:11px 0;font-size:.89rem;border:1px solid}
+.tip{background:rgba(0,168,132,.08);border-color:rgba(0,168,132,.35)}
+.warn{background:rgba(255,197,61,.07);border-color:rgba(255,197,61,.35)}
+.danger{background:rgba(255,107,107,.07);border-color:rgba(255,107,107,.35)}
+.win{background:rgba(37,211,102,.07);border-color:rgba(37,211,102,.4)}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:.88rem}
+th,td{border:1px solid var(--line);padding:9px 13px;text-align:left;vertical-align:top}
+th{background:var(--card2);font-weight:700;white-space:nowrap}
+td code,.ic{background:var(--code);border:1px solid var(--line);border-radius:6px;padding:1px 8px;font:12px Consolas,Menlo,monospace;color:#D8F5E8;display:inline-block;word-break:break-all}
+details{background:var(--card);border:1px solid var(--line);border-radius:14px;margin:0 0 10px;overflow:hidden}
+details summary{cursor:pointer;padding:14px 18px;font-weight:600;list-style:none;display:flex;align-items:center;gap:10px}
+details summary::before{content:"▸";color:var(--teal);transition:.2s;font-size:.85rem}
+details[open] summary::before{transform:rotate(90deg)}
+details .dbody{padding:0 18px 16px 44px;color:var(--dim);font-size:.92rem}details .dbody b{color:var(--ink)}
+footer{text-align:center;color:var(--faint);font-size:.83rem;margin-top:44px;line-height:2.1}
+#toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(80px);opacity:0;background:#0E2A1F;border:1px solid var(--green);color:var(--green);border-radius:12px;padding:10px 22px;font-size:.88rem;font-weight:600;z-index:99;transition:.3s;pointer-events:none}
+#toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+@media (max-width:560px){.step{padding:16px 14px 16px 56px}.sec-sub{margin-left:0}.card{padding:16px}th,td{padding:7px 9px;font-size:.84rem}}
+@media print{.bar-wrap,.toc,.copy,.hero .cta{display:none}body{background:#fff;color:#111}.card,.step,details{border-color:#ccc;background:#fff;color:#111}.step p,.sec-sub,.small{color:#333}pre{background:#f4f4f4;color:#111}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>Deploying <span class="grad">Zenovix</span> — Railway + cPanel</h1>
+  <p class="sub">The brain (AGI 1.6.0) on Railway, auto-deployed from GitHub · site + widget v3.2 on cPanel · a real admin panel and admin bot</p>
+  <div class="badges">
+    <span class="badge">⏱ Total: <b>~2 hours</b></span>
+    <span class="badge">💰 <b>~$30–40/mo</b> (Railway) + whatever you pay for hosting</span>
+    <span class="badge">🎓 Level: <b>point-and-click — only copy/paste</b></span>
+    <span class="badge">✅ Result: <b>5 live surfaces</b> (widget, customer bot, admin bot, TWA, web panel)</span>
+  </div>
+</header>
+
+<div class="bar-wrap"><div class="bar-row">
+  <div class="bar-track"><div class="bar-fill" id="barFill"></div></div>
+  <div class="bar-text" id="barText"><b>0</b> of 28 steps</div>
+</div></div>
+
+<nav class="toc">
+  <a href="#s0">0 · Prerequisites</a><a href="#s1">1 · GitHub</a><a href="#s2">2 · Railway</a><a href="#s3">3 · Variables</a>
+  <a href="#s4">4 · Domain</a><a href="#s5">5 · Telegram + Admin</a><a href="#s6">6 · Site widget</a><a href="#s7">7 · Final tests</a>
+  <a href="#s8">8 · Ops</a><a href="#s9">9 · Troubleshooting</a>
+</nav>
+
+<!-- PHASE 0 -->
+<section id="s0">
+  <div class="sec-head"><div class="sec-num">0</div><h2>Prerequisites — have these ready</h2></div>
+  <p class="sec-sub">10 minutes. If everything is ready, jump to Phase 1.</p>
+  <div class="card"><ul>
+    <li><b>GitHub account</b> — the same <span class="ic">ImXforever</span> that hosts the AGI and Xbot repos.</li>
+    <li><b>Railway account</b> — go to <span class="ic">railway.app</span> → <b>Login with GitHub</b>. The 30-day trial gives $5 credit; upgrade to Hobby ($5/mo) to continue (card required).</li>
+    <li><b>cPanel + DNS access</b> for zenovix.ae — you have it.</li>
+    <li><b>Telegram</b> — we will create a new bot.</li>
+    <li><b>OpenAI or OpenRouter key</b> — <span class="ic">platform.openai.com/api-keys</span> (min $5) or <span class="ic">openrouter.ai/keys</span>. Without it the bot answers from the knowledge base; with it, fully smart.</li>
+    <li><b>The <span class="ic">zenovix-chat</span> package (v3.2)</b> — unzip it; <span class="ic">railway-variables-READY.env</span> is needed in Phase 3.</li>
+  </ul></div>
+  <div class="win">🎯 <b>The 4-move plan:</b> ① AGI code to GitHub → ② Railway deploys it + Postgres/Redis + variables → ③ domain <span class="ic">zenovix-production.up.railway.app</span> + Telegram webhook → ④ widget v3.2 on the site pointing at Railway. Then: admin panel, TWA, admin bot — all already alive.</div>
+</section>
+
+<!-- PHASE 1 -->
+<section id="s1">
+  <div class="sec-head"><div class="sec-num">1</div><h2>GitHub — get the code (with the CORS patch) into the repo</h2></div>
+  <p class="sec-sub">15 minutes · one file changed: <span class="ic">app/main.py</span> (adds CORS so the site widget can call the API).</p>
+
+  <div class="step"><input type="checkbox" data-chk><h3><span class="sn">1-1</span>Open the AGI repo</h3>
+    <p>Go to <span class="ic">github.com/ImXforever/AGI</span> and make sure the project is complete (<span class="ic">app/</span> folder, <span class="ic">Dockerfile</span>, <span class="ic">railway.json</span>…). A private repo is fine — Railway gets access to it.</p>
+  </div>
+
+  <div class="step"><input type="checkbox" data-chk><h3><span class="sn">1-2</span>Replace <span class="ic">app/main.py</span> with the patched version</h3>
+    <p>In the repo: open the <span class="ic">app</span> folder → click <span class="ic">main.py</span> → the ✏️ pencil icon.</p>
+    <p>Add this block <b>right after the line <span class="ic">app.add_middleware(RequestContextMiddleware)</span></b> (if you copy the whole file from this package, it is already in place):</p>
+    <div class="code"><button class="copy" type="button">Copy</button><pre># Website widget on zenovix.ae calls the public API cross-origin.
+import os as _os
+from fastapi.middleware.cors import CORSMiddleware
+
+_allowed = [
+    o.strip() for o in _os.getenv(
+        "ALLOWED_ORIGINS", "https://zenovix.ae,https://www.zenovix.ae"
+    ).split(",") if o.strip()
+]
+if _allowed:
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=_allowed,
+        allow_methods=["GET", "POST", "OPTIONS"],
+        allow_headers=["Content-Type"],
+        max_age=86400,
+    )</pre></div>
+    <p class="small">Commit changes at the bottom. (The pro way: clone locally, drop the patched file in, push — same result.)</p>
+    <div class="tip">💡 This patch is the only code difference from the original repo. If you skip it, the widget on zenovix.ae gets CORS errors in the browser console and live chat fails — so this step matters!</div>
+  </div>
+</section>
+
+<!-- PHASE 2 -->
+<section id="s2">
+  <div class="sec-head"><div class="sec-num">2</div><h2>Railway — create the project and first deploy</h2></div>
+  <p class="sec-sub">20 minutes · Railway understands the repo's own Dockerfile.</p>
+
+  <div class="step"><input type="checkbox" data-chk><h3><span class="sn">2-1</span>New project from the GitHub repo</h3>
+    <p>In <span class="ic">railway.app</span> → <b>New Project</b> → <b>Deploy from GitHub repo</b> → pick <span class="ic">AGI</span>. Empty list? Account Settings → Applications → grant Railway access to the AGI repo.</p>
+  </div>
+
+  <div class="step"><input type="checkbox" data-chk><h3><span class="sn">2-2</span>Let the first build run</h3>
+    <p>Railway detects the <span class="ic">Dockerfile</span> and builds (3–5 minutes). The first deploy will likely go <b>red</b> — totally normal! We have no database or variables yet; Phase 3 fixes that.</p>
+  </div>
+
+  <div class="step"><input type="checkbox" data-chk><h3><span class="sn">2-3</span>Add PostgreSQL and Redis</h3>
+    <p>On the project canvas → <b>+ New</b> → <b>Database</b> → <b>Add PostgreSQL</b>. Then <b>+ New</b> → <b>Database</b> → <b>Add Redis</b>.</p>
+    <p class="small">Two small services appear next to AGI. Keep their names <span class="ic">Postgres</span> and <span class="ic">Redis</span> — the env file references them by those names.</p>
+  </div>
+
+  <div class="step"><input type="checkbox" data-chk><h3><span class="sn">2-4</span>File storage: Bucket (Railway's built-in S3)</h3>
+    <p><b>+ New</b> → <b>Storage</b> → <b>Bucket</b> (or from Marketplace). Keep its default name — the env file wires it via <span class="ic">${{…}}</span> references.</p>
+    <div class="warn">⚠️ If the 4 R2 variables stay empty/red after saving: open the Bucket service → <b>Credentials</b> tab → copy the 4 values (ENDPOINT / ACCESS_KEY_ID / SECRET_ACCESS_KEY / BUCKET) into the AGI variables by hand.</div>
+  </div>
+</section>
+
+<!-- PHASE 3 -->
+<section id="s3">
+  <div class="sec-head"><div class="sec-num">3</div><h2>Variables — the heart of the setup</h2></div>
+  <p class="sec-sub">20 minutes · <span class="ic">railway-variables-READY.env</span> in the package has everything prepared.</p>
+
+  <div class="step"><input type="checkbox" data-chk><h3><span class="sn">3-1</span>Prepare four values first</h3>
+    <table>
+      <tr><th>What</th><th>Where from</th></tr>
+      <tr><td>Bot token</td><td>Telegram → <span class="ic">@BotFather</span> → <span class="ic">/newbot</span> → name: <span class="ic">Zenovix</span> · username: <span class="ic">zenovix_bot</span> → copy the <span class="ic">123456:ABC-…</span> token</td></tr>
+      <tr><td>Your numeric id</td><td>Telegram → <span class="ic">@userinfobot</span> → <span class="ic">/start</span> → the numeric Id (e.g. <span class="ic">123456789</span>)</td></tr>
+      <tr><td>Strong admin password</td><td>Make one (16+ chars) — used to log into <span class="ic">/admin</span></td></tr>
+      <tr><td>LLM key</td><td>OpenAI: <span class="ic">sk-…</span> or OpenRouter: <span class="ic">sk-or-…</span></td></tr>
+    </table>
+  </div>
+
+  <div class="step"><input type="checkbox" data-chk><h3><span class="sn">3-2</span>Paste into the Raw Editor</h3>
+    <p>Open the <b>AGI</b> service → <b>Variables</b> tab → <b>Raw Editor</b> → paste the full content of <span class="ic">railway-variables-READY.env</span> (after filling it in) → Save.</p>
+    <p>Make sure these 6 are filled:</p>
+    <div class="code"><button class="copy" type="button">Copy</button><pre>TELEGRAM_BOT_TOKEN=PASTE_YOUR_BOT_TOKEN
+TELEGRAM_ADMIN_IDS=PASTE_YOUR_TELEGRAM_NUMERIC_ID
+TELEGRAM_WEBHOOK_SECRET=PASTE_16PLUS_CHAR_RANDOM_SECRET
+ADMIN_BOOTSTRAP_PASSWORD=PASTE_STRONG_ADMIN_PASSWORD
+WEB_SECRET=PASTE_16PLUS_CHAR_RANDOM_SECRET
+DIRECT_API_KEY=PASTE_YOUR_OPENAI_KEY</pre></div>
+    <ul>
+      <li><b>Twilio/SendGrid not needed yet:</b> the file ships with <span class="ic">WHATSAPP_ENABLED=false</span> and <span class="ic">EMAIL_ENABLED=false</span> — those are later channels; enable whenever ready.</li>
+      <li><span class="ic">DATABASE_URL=${{Postgres.DATABASE_URL}}</span> and <span class="ic">REDIS_URL=${{Redis.REDIS_URL}}</span> — do not touch; Railway injects the plugin values.</li>
+    </ul>
+    <div class="warn">⚠️ After saving, a new deploy starts automatically. Still red? Open Deployments → latest → View Logs and read the message (usually one missing variable — Phase 9 troubleshooting).</div>
+  </div>
+
+  <div class="step"><input type="checkbox" data-chk><h3><span class="sn">3-3</span>First green test 🎉</h3>
+    <p>AGI service → Settings → Networking → <b>Generate Domain</b> → you get something like <span class="ic">agi-production-xxxx.up.railway.app</span>. Open in a browser:</p>
+    <div class="code"><button class="copy" type="button">Copy</button><pre>https://YOUR-RAILWAY-URL/healthz</pre></div>
+    <div class="win">✅ Seeing <span class="ic">{"status":"ok",…}</span>? The brain is alive in the cloud!</div>
+  </div>
+</section>
+
+<!-- PHASE 4 -->
+<section id="s4">
+  <div class="sec-head"><div class="sec-num">4</div><h2>Backend URL — already live ✅ (skip the old domain work)</h2></div>
+  <p class="sec-sub">Your brain already answers at <b>zenovix-production.up.railway.app</b> (verified: /health → ok, catalog fa, enquiry → ZX-…). The custom-domain step below is now OPTIONAL — do it whenever you like; nothing else in this guide depends on it.</p>
+
+  <div class="step"><input type="checkbox" data-chk><h3><span class="sn">4-1</span>(Optional now) Custom Domain in Railway</h3>
+    <p>AGI service → Settings → Networking → <b>Custom Domain</b> → enter <span class="ic">zenovix-production.up.railway.app</span> → Railway shows a CNAME target (like <span class="ic">agi-xxx.up.railway.app</span>) — copy it.</p>
+  </div>
+
+  <div class="step"><input type="checkbox" data-chk><h3><span class="sn">4-2</span>(Optional now) The DNS record</h3>
+    <table>
+      <tr><th>Where</th><th>What to do</th></tr>
+      <tr><td>cPanel → <b>Zone Editor</b></td><td>Record type: <span class="ic">CNAME</span> · Name: <span class="ic">agi</span> · Target: the value Railway gave → Save</td></tr>
+      <tr><td>If Cloudflare fronts the domain</td><td>Same CNAME but set the cloud to <b>DNS only (grey)</b> — CF proxy sometimes interferes with Railway streaming/websockets</td></tr>
+    </table>
+    <p class="small">Wait 2–10 minutes. Test: <span class="ic">https://zenovix-production.up.railway.app/health</span> — TLS is issued automatically. From now on, use only this domain everywhere!</p>
+  </div>
+</section>
+
+<!-- PHASE 5 -->
+<section id="s5">
+  <div class="sec-head"><div class="sec-num">5</div><h2>Telegram + admin panel + TWA — every admin surface</h2></div>
+  <p class="sec-sub">20 minutes · this is where "connecting the panel to the admin bot" happens — because both live inside this same AGI.</p>
+
+  <div class="step"><input type="checkbox" data-chk><h3><span class="sn">5-1</span>Connect the bot webhook</h3>
+    <p>Open this URL in a browser — fill the three <span class="ic">…</span> placeholders with your values (bot token, domain, the same secret from the env file):</p>
+    <div class="code"><button class="copy" type="button">Copy</button><pre>https://api.telegram.org/bot&lt;TOKEN&gt;/setWebhook?url=https://zenovix-production.up.railway.app/tg/webhook&amp;secret_token=&lt;WEBHOOK_SECRET&gt;</pre></div>
+    <div class="win">✅ Seeing <span class="ic">{"ok":true}</span>? The customer bot is connected. Now send <span class="ic">/start</span> to your bot in Telegram — the platform's main menu should appear!</div>
+  </div>
+
+  <div class="step"><input type="checkbox" data-chk><h3><span class="sn">5-2</span>Test the admin bot</h3>
+    <p>Since <span class="ic">TELEGRAM_ADMIN_IDS</span> = your id, send <span class="ic">/admin</span> to the same bot — the full list of admin commands (settings, orders, tickets…) answers back. <b>This bot + this id = the admin channel.</b></p>
+  </div>
+
+  <div class="step"><input type="checkbox" data-chk><h3><span class="sn">5-3</span>The admin web panel</h3>
+    <p>Go to <span class="ic">https://zenovix-production.up.railway.app/admin</span> → log in with <span class="ic">ADMIN_USERNAME</span> (default: zenovix-admin) and <span class="ic">ADMIN_BOOTSTRAP_PASSWORD</span>. Inside: dashboard, orders/quotes (the HITL queue), tickets, customers, catalog, reports…</p>
+    <div class="warn">🔒 Security: after your first login, create a real user for yourself in the panel, then remove/rename the bootstrap account.</div>
+  </div>
+
+  <div class="step"><input type="checkbox" data-chk><h3><span class="sn">5-4</span>TWA — the admin panel inside Telegram</h3>
+    <p>In BotFather: <span class="ic">/setmenubutton</span> → pick your bot → URL: <span class="ic">https://zenovix-production.up.railway.app/admin/twa.html</span>. The bot's menu button now opens the admin web app inside Telegram.</p>
+  </div>
+
+  <div class="step"><input type="checkbox" data-chk><h3><span class="sn">5-5</span>Run the golden loop ✨</h3>
+    <p>Submit a test quote from the bot (or the widget after Phase 6). You should see, simultaneously:</p>
+    <ol class="steps">
+      <li><b>Your Telegram</b> receives a "New website lead ZX-…" alert,</li>
+      <li>the customer gets the ZX reference,</li>
+      <li>the lead appears in the <b>panel</b> and can be acted on from all three places (admin bot / TWA / web panel).</li>
+    </ol>
+  </div>
+</section>
+
+<!-- PHASE 6 -->
+<section id="s6">
+  <div class="sec-head"><div class="sec-num">6</div><h2>Widget v3.2 on the site (cPanel)</h2></div>
+  <p class="sec-sub">15 minutes · same steps as the beginner guide, but the URLs point at Railway.</p>
+
+  <div class="step"><input type="checkbox" data-chk><h3><span class="sn">6-1</span>Upload the widget file</h3>
+    <p>File Manager → <span class="ic">public_html/js/</span> (create the js folder if missing) → upload <span class="ic">zenovix-chat.js</span> version <b>v3.2</b> from the package.</p>
+  </div>
+
+  <div class="step"><input type="checkbox" data-chk><h3><span class="sn">6-2</span>Embed code before <span class="ic">&lt;/body&gt;</span></h3>
+    <div class="code"><button class="copy" type="button">Copy</button><pre>&lt;script&gt;
+  window.ZenovixChat = {
+    api:     "https://zenovix-production.up.railway.app/api/chat",
+    apiBase: "https://zenovix-production.up.railway.app/api/public",
+    lang: "en",            /* or "fa" */
+    theme: "dark"
+  };
+&lt;/script&gt;
+&lt;script src="/js/zenovix-chat.js?v=3.2" defer&gt;&lt;/script&gt;</pre></div>
+    <ul>
+      <li><b>WordPress:</b> the WPCode plugin → Add Snippet → HTML → location: Site Wide Footer.</li>
+      <li>The Flask fork mimics the same contract — if you ever want the lightweight fallback on cPanel too, only these two URLs change; the widget stays identical.</li>
+    </ul>
+  </div>
+
+  <div class="step"><input type="checkbox" data-chk><h3><span class="sn">6-3</span>The Flask fork: keep it, but parked (optional)</h3>
+    <p>If you already installed the fork backend on cPanel (the beginner guide), leave it — its role is now <b>fallback</b>: if Railway ever goes down, temporarily point the two embed URLs at <span class="ic">/chat/api/…</span> on your host and light KB chat stays up. Never installed it? Not required at all.</p>
+  </div>
+</section>
+
+<!-- PHASE 7 -->
+<section id="s7">
+  <div class="sec-head"><div class="sec-num">7</div><h2>Final test — an 8-point checklist</h2></div>
+  <p class="sec-sub">Open your site with <kbd>Ctrl</kbd>+<kbd>F5</kbd> and tick everything:</p>
+  <div class="card">
+    <div class="step" style="padding:12px 20px 12px 56px"><input type="checkbox" data-chk><b>1. Brain health</b><p class="small"><span class="ic">zenovix-production.up.railway.app/health</span> → {"ok":true,…} (verified live ✓).</p></div>
+    <div class="step" style="padding:12px 20px 12px 56px"><input type="checkbox" data-chk><b>1c. Telegram channel (optional, 5 min)</b><p class="small">@BotFather → /newbot → token → Railway vars: <span class="ic">TELEGRAM_BOT_TOKEN</span>, <span class="ic">TELEGRAM_ADMIN_IDS</span>, <span class="ic">TELEGRAM_WEBHOOK_SECRET</span> → after deploy open once <span class="ic">/tg/set-webhook/&lt;secret&gt;</span>. Same brain, same ZX refs; managers get instant order pushes + /stats, /leads. Covered by the 72-check suite.</p></div>
+    <div class="step" style="padding:12px 20px 12px 56px"><input type="checkbox" data-chk><b>1b. Landing &amp; backstage</b><p class="small">Open the root URL → a real landing page with the live widget on it (Telegram-Web-App ready). <span class="ic">/admin</span> → team login — password = <span class="ic">ADMIN_PASSWORD</span> env (default <span class="ic">zenovix-admin</span>, change it in Railway → Variables!). Inside the panel: leads &amp; orders with ZX refs, chat stats, uptime.</p></div>
+    <div class="step" style="padding:12px 20px 12px 56px"><input type="checkbox" data-chk><b>2. Button + live chat</b><p class="small">The "Ask Zenovix" button → ask "What services do you offer?" → a smart answer with ✓✓ ticks.</p></div>
+    <div class="step" style="padding:12px 20px 12px 56px"><input type="checkbox" data-chk><b>3. Real catalog</b><p class="small"><span class="ic">/prices</span> → 🟢 LIVE badge + services from the database (editable in the admin panel).</p></div>
+    <div class="step" style="padding:12px 20px 12px 56px"><input type="checkbox" data-chk><b>4. Order → ZX + alert</b><p class="small">A test order with e-mail → ZX-XXXXXXXX reference → <b>your Telegram gets the lead alert</b> → you see it in /admin → approve → "approved" message reaches the customer.</p></div>
+    <div class="step" style="padding:12px 20px 12px 56px"><input type="checkbox" data-chk><b>5. TTS button 🔊</b><p class="small">The 🔊 button above the chat FAB → auto-read ON → answers are read aloud; the 🔊 on any bubble reads just that message. Switch to Persian via <span class="ic">/lang</span> — Persian voice!</p></div>
+    <div class="step" style="padding:12px 20px 12px 56px"><input type="checkbox" data-chk><b>6. Microphone 🎤</b><p class="small">In Chrome/Edge, the composer mic button → speak → text appears.</p></div>
+    <div class="step" style="padding:12px 20px 12px 56px"><input type="checkbox" data-chk><b>7. /track</b><p class="small">Send <span class="ic">/track</span> → all your references with status + a live ZX check against the brain.</p></div>
+    <div class="step" style="padding:12px 20px 12px 56px"><input type="checkbox" data-chk><b>8. Persian + mobile</b><p class="small"><span class="ic">/lang</span> → فارسی → full RTL; open the site on a phone → fullscreen chat.</p></div>
+  </div>
+  <div class="win">🎉 8/8? The deployment is complete: real brain + panel + admin bot + TWA + voice widget — exactly the blueprint architecture.</div>
+</section>
+
+<!-- PHASE 8 -->
+<section id="s8">
+  <div class="sec-head"><div class="sec-num">8</div><h2>Monitoring, backup, updates</h2></div>
+  <div class="card"><ul>
+    <li><b>Monitoring:</b> <span class="ic">uptimerobot.com</span> (free) → new Monitor → <span class="ic">https://zenovix-production.up.railway.app/health</span> every 5 min → email alerts. Railway also restarts the container if it crashes.</li>
+    <li><b>Database backup:</b> Railway → Postgres service → Backups tab (plan-dependent) + a monthly manual <span class="ic">pg_dump</span> kept somewhere safe.</li>
+    <li><b>Updating the brain:</b> any change on GitHub (even from the web, one commit) → Railway deploys automatically. No commands needed.</li>
+    <li><b>Updating the widget:</b> upload the new js file and bump <span class="ic">?v=</span> in the embed (e.g. v=3.3) so browser caches refresh.</li>
+    <li><b>Cost:</b> glance at Railway → Usage weekly; the Hobby plan is enough to start.</li>
+  </ul></div>
+</section>
+
+<!-- PHASE 9 -->
+<section id="s9">
+  <div class="sec-head"><div class="sec-num">9</div><h2>Troubleshooting — the rescue table</h2></div>
+  <div class="card" style="overflow-x:auto">
+    <table>
+      <tr><th>Symptom</th><th>Cause and fix</th></tr>
+      <tr><td>Deploy red, log says <span class="ic">ConfigError: required variable …</span></td><td>That variable is missing from the Raw Editor (usually a leftover PASTE_ or a plugin not added yet). Add the exact name from the log → auto-deploy.</td></tr>
+      <tr><td>Log: <span class="ic">LLM_MODE=mock is not permitted</span></td><td>Make sure <span class="ic">APP_ENV=production</span> comes with <span class="ic">LLM_MODE=direct</span> and a real key — mock is intentionally locked in production.</td></tr>
+      <tr><td><span class="ic">/healthz</span> unreachable / 502</td><td>Deployments → View Logs. Build green and logs clean? Check Settings → Networking; verify DNS at <span class="ic">dnschecker.org</span> (CNAME propagation).</td></tr>
+      <tr><td>Widget opens but chat says "Network problem" / console: <b>CORS</b></td><td>1) Is the Phase 1-2 patch really in the repo? 2) Is <span class="ic">ALLOWED_ORIGINS</span> exactly <span class="ic">https://zenovix.ae,https://www.zenovix.ae</span> (no trailing slashes)? 3) Was a new deploy created after the change?</td></tr>
+      <tr><td>setWebhook replies <span class="ic">ok:false</span></td><td>Wrong token/secret or a URL without https. Rebuild it with the exact env values.</td></tr>
+      <tr><td>Bot silent but healthz green</td><td>Set the webhook again (needed after any domain change) and keep secret_token equal to TELEGRAM_WEBHOOK_SECRET.</td></tr>
+      <tr><td>Cannot log into /admin</td><td>ADMIN_USERNAME/ADMIN_BOOTSTRAP_PASSWORD come from env — every variables change requires a fresh deploy. Cookies: open via https.</td></tr>
+      <tr><td>The 🔊 button does not appear</td><td>Some browsers (notably older iOS) lack Web Speech — the button only renders where supported. Chrome/Edge/desktop Safari are fine. For server-side neural voices: future phase <span class="ic">/api/public/speak</span> with edge-tts (blueprint §10).</td></tr>
+      <tr><td>Microphone missing</td><td>Chrome/Edge only (SpeechRecognition). Firefox is unsupported — the button is hidden on purpose, not a bug.</td></tr>
+      <tr><td>429 in chat</td><td>Rate limit (default 30/min — <span class="ic">RATE_LIMIT_PER_MINUTE</span> in the env). Wait a few minutes.</td></tr>
+    </table>
+  </div>
+
+  <details><summary>Can I do Railway without a card?</summary><div class="dbody">The 30-day trial ($5 credit, GitHub-verified account) starts without a card; continuing on Hobby ($5/mo, plus plugins in practice) needs one. If you only want to "see it" for now, you can do Phase 6 with the Flask fork on cPanel and add Railway later — the widget does not change, just two URLs.</div></details>
+  <details><summary>Adding WhatsApp/email later?</summary><div class="dbody">All adapters are inside AGI. In the env file set WHATSAPP_ENABLED=true and EMAIL_ENABLED=true and fill the 6 Twilio/SendGrid/IMAP values in that section → commit/restart. A full guide lives in the repo: <span class="ic">DEPLOY-EGL-FA.md</span> (Persian).</div></details>
+  <details><summary>Can I start cPanel-only first?</summary><div class="dbody">Allowed: setup-guide.html documents the cPanel-only path (Flask fork). But the admin panel / admin bot / TWA do not exist in that path — Railway is required for those. Whenever you are ready, you only swap the widget's two URLs and you are on the cloud brain.</div></details>
+</section>
+
+<footer>
+  Zenovix v3.2 deployment guide ● companion docs: <span class="ic">architecture-blueprint.html</span> (the why) · <span class="ic">setup-guide.html</span> (cPanel-only path) · ready env: <span class="ic">railway-variables-READY.env</span><br>
+  Print/PDF: <kbd>Ctrl</kbd>+<kbd>P</kbd> — checkboxes survive printing 💾
+</footer>
+
+</div>
+<div id="toast">Copied ✓</div>
+
+<script>
+(function(){var b=Array.prototype.slice.call(document.querySelectorAll("input[data-chk]"));var f=document.getElementById("barFill"),t=document.getElementById("barText");var s=null;try{s=window.localStorage;s.getItem("zxdepEN");}catch(e){s=null;}
+function u(sv){var d=0;b.forEach(function(x,i){var st=x.closest(".step, .test-row");if(st){if(x.checked){d++;st.classList.add("done");}else{st.classList.remove("done");}}if(sv&&s){try{s.setItem("zxdepEN"+i,x.checked?"1":"0");}catch(e){}}});f.style.width=Math.round(d/b.length*100)+"%";t.innerHTML=d===b.length?"🎉 All "+b.length+" steps — fully deployed!":"<b>"+d+"</b> of "+b.length+" steps";}
+b.forEach(function(x,i){if(s){try{x.checked=s.getItem("zxdepEN"+i)==="1";}catch(e){}}x.addEventListener("change",function(){u(true);});});u(false);
+var toast=document.getElementById("toast"),tt;function sh(m){toast.textContent=m;toast.classList.add("show");clearTimeout(tt);tt=setTimeout(function(){toast.classList.remove("show");},1600);}
+function legacy(t2){var a=document.createElement("textarea");a.value=t2;a.style.position="fixed";a.style.opacity="0";document.body.appendChild(a);a.select();var ok=false;try{ok=document.execCommand("copy");}catch(e){}document.body.removeChild(a);return ok;}
+Array.prototype.forEach.call(document.querySelectorAll(".copy"),function(btn){btn.addEventListener("click",function(){var pre=btn.parentNode.querySelector("pre");var text=pre?pre.textContent:"";function done(ok){if(ok){btn.textContent="Copied ✓";btn.classList.add("ok");sh("Copied ✓");setTimeout(function(){btn.textContent="Copy";btn.classList.remove("ok");},1500);}else{sh("Auto-copy failed — select manually");}}
+if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){done(true);},function(){done(legacy(text));});}else{done(legacy(text));}});});})();
+</script>
+</body>
+</html>

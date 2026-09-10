@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>START-HERE — Build the whole Zenovix stack yourself</title>
+<style>
+:root{--bg:#0E0A1E;--card:#16112A;--card2:#1D1636;--code:#0B0817;--line:rgba(255,255,255,.12);--line2:rgba(255,255,255,.2);
+--ink:#F1ECFB;--dim:#A79FBE;--faint:#6E6879;--teal:#00A884;--green:#25D366;--purple:#8A3FE6;--amber:#FFC53D;--blue:#4DA3FF}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15.5px/1.75 Inter,"Segoe UI",system-ui,sans-serif;
+background-image:radial-gradient(1100px 600px at 85% -5%,rgba(138,63,230,.22),transparent),radial-gradient(900px 500px at 5% 15%,rgba(0,168,132,.12),transparent);background-attachment:fixed}
+.wrap{max-width:820px;margin:0 auto;padding:0 18px 80px}
+.hero{padding:46px 0 6px;text-align:center}.hero h1{font-size:clamp(1.5rem,4.2vw,2.1rem);margin:0 0 8px}
+.grad{background:linear-gradient(135deg,#25D366,#00A884);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.sub{color:var(--dim);margin:4px 0 16px}
+.pills{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.pill{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:5px 14px;font-size:.8rem;color:var(--dim)}.pill b{color:var(--ink)}
+.bar-wrap{position:sticky;top:0;z-index:50;background:rgba(14,10,30,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);margin:22px -18px 26px;padding:10px 18px}
+.bar-row{max-width:820px;margin:0 auto;display:flex;align-items:center;gap:12px}
+.bar-track{flex:1;height:8px;border-radius:99px;background:var(--card2);overflow:hidden;border:1px solid var(--line)}
+.bar-fill{height:100%;width:0%;border-radius:99px;background:linear-gradient(90deg,#25D366,#00A884);transition:width .4s}
+.bar-text{font-size:.82rem;color:var(--dim);white-space:nowrap}.bar-text b{color:var(--green)}
+.sec{margin:0 0 26px}.sec h2{font-size:1.15rem;margin:0 0 12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px 20px;margin:0 0 12px}
+.road{display:flex;flex-direction:column}
+.rstep{display:flex;gap:13px;align-items:flex-start;position:relative;padding:0 0 12px}
+.rstep:last-child{padding-bottom:2px}
+.rstep .dot{min-width:32px;height:32px;border-radius:99px;display:flex;align-items:center;justify-content:center;background:rgba(0,168,132,.14);border:1px solid rgba(0,168,132,.45);color:var(--green);font-weight:800;z-index:1}
+.rstep .body{flex:1;background:var(--card2);border:1px solid var(--line);border-radius:13px;padding:11px 15px;transition:border-color .2s}
+.rstep.done .body{border-color:rgba(37,211,102,.55)}
+.rstep .body input{width:22px;height:22px;accent-color:#25D366;float:right;margin-left:10px;cursor:pointer}
+.rstep b.t{display:block;font-size:.97rem}
+.rstep span.d{color:var(--dim);font-size:.85rem;display:block;margin-top:2px}
+.rstep span.f{display:inline-block;margin-top:6px;background:rgba(77,163,255,.1);border:1px solid rgba(77,163,255,.35);color:var(--blue);border-radius:99px;padding:2px 12px;font-size:.78rem;margin-right:6px}
+.rstep .tm{float:right;color:var(--faint);font-size:.74rem;border:1px solid var(--line);border-radius:99px;padding:1px 10px;margin-left:8px}
+.rstep:not(:last-child)::before{content:"";position:absolute;left:15px;top:32px;bottom:0;width:2px;background:rgba(0,168,132,.3)}
+table{width:100%;border-collapse:collapse;margin:8px 0;font-size:.87rem}
+th,td{border:1px solid var(--line);padding:8px 12px;text-align:left;vertical-align:top}
+th{background:var(--card2);font-weight:700;white-space:nowrap}
+code,.ic{background:var(--code);border:1px solid var(--line);border-radius:6px;padding:1px 8px;font:12px Consolas,Menlo,monospace;color:#D8F5E8;display:inline-block;word-break:break-all}
+.win,.warn{border-radius:12px;padding:11px 15px;margin:10px 0;font-size:.9rem;border:1px solid}
+.win{background:rgba(37,211,102,.07);border-color:rgba(37,211,102,.4)}
+.warn{background:rgba(255,197,61,.07);border-color:rgba(255,197,61,.35)}
+ul.t{margin:4px 0;padding-left:20px;color:var(--dim)}ul.t li{margin:4px 0}ul.t b{color:var(--ink)}
+footer{text-align:center;color:var(--faint);font-size:.82rem;margin-top:40px;line-height:2}
+@media print{body{background:#fff;color:#111}.card,.rstep .body{border-color:#ccc;background:#fff;color:#111}th,td{border-color:#bbb}.rstep span.d,ul.t{color:#333}.bar-wrap,.rstep .body input{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>🛠 Build the entire <span class="grad">Zenovix</span> stack — by yourself</h1>
+  <p class="sub">This package = the whole project: cloud brain + site widget + every guide. The build order lives on this page.</p>
+  <div class="pills">
+    <span class="pill">⏱ Total: <b>~2 hours</b></span>
+    <span class="pill">💰 <b>~$30–40/mo</b> Railway + existing hosting</span>
+    <span class="pill">✅ Result: <b>5 live surfaces</b> — widget, customer bot, admin bot, TWA, web panel</span>
+  </div>
+</header>
+
+<div class="bar-wrap"><div class="bar-row">
+  <div class="bar-track"><div class="bar-fill" id="barFill"></div></div>
+  <div class="bar-text" id="barText"><b>0</b> of 9 steps</div>
+</div></div>
+
+<div class="sec">
+  <h2>🗺 The whole project at a glance</h2>
+  <div class="card"><ul class="t">
+    <li><b>Brain (AGI 1.6.0)</b> → runs on <b>Railway</b>, auto-deployed from GitHub — smart chat, catalog, orders with real <span class="ic">ZX-</span> references, admin web panel, admin bot, Telegram Web App (TWA).</li>
+    <li><b>Widget (v3.2)</b> → a single JS file on your <b>cPanel</b> site — full WhatsApp-style environment + read-aloud button 🔊 + voice input 🎤 + <span class="ic">/track</span>.</li>
+    <li><b>The site host's role:</b> static file + page only — no heavy load on cPanel.</li>
+    <li><b>Fallback:</b> if Railway ever goes down, the lightweight backend (the <span class="ic">backend/</span> folder in this package) keeps chat alive on cPanel.</li>
+  </ul></div>
+</div>
+
+<div class="sec">
+  <h2>📋 Build order — 9 steps (go in order)</h2>
+  <div class="card"><div class="road" id="road">
+
+    <div class="rstep"><div class="dot">1</div><div class="body">
+      <input type="checkbox" data-chk><span class="tm">5 min</span>
+      <b class="t">Understand the architecture (one read)</b>
+      <span class="d">Why the brain lives on Railway and the widget on cPanel. What connects to what. Six design principles + the full map.</span>
+      <span class="f">architecture-blueprint.html</span>
+    </div></div>
+
+    <div class="rstep"><div class="dot">2</div><div class="body">
+      <input type="checkbox" data-chk><span class="tm">15 min</span>
+      <b class="t">GitHub: replace the patched file</b>
+      <span class="d">Replace <span class="ic">app/main.py</span> in the <span class="ic">ImXforever/AGI</span> repo with <span class="ic">launch/main.py</span> from this package (adds CORS for the site widget), then commit.</span>
+      <span class="f">launch/main.py</span><span class="f">deployment-guide.html → Phase 1</span>
+    </div></div>
+
+    <div class="rstep"><div class="dot">3</div><div class="body">
+      <input type="checkbox" data-chk><span class="tm">20 min</span>
+      <b class="t">Railway: project + databases</b>
+      <span class="d">Deploy from GitHub repo → +PostgreSQL → +Redis → +Bucket. The first deploy goes red — that is normal.</span>
+      <span class="f">deployment-guide.html → Phase 2</span>
+    </div></div>
+
+    <div class="rstep"><div class="dot">4</div><div class="body">
+      <input type="checkbox" data-chk><span class="tm">20 min</span>
+      <b class="t">Variables + first green /healthz 🎉</b>
+      <span class="d">Paste <span class="ic">railway-variables-READY.env</span> into the Raw Editor after filling the 6 PASTE_ values. Bot token from BotFather, your id from @userinfobot, an OpenAI/OpenRouter key.</span>
+      <span class="f">railway-variables-READY.env</span><span class="f">deployment-guide.html → Phase 3</span>
+    </div></div>
+
+    <div class="rstep"><div class="dot">5</div><div class="body">
+      <input type="checkbox" data-chk><span class="tm">10 min</span>
+      <b class="t">Backend: zenovix-production.up.railway.app</b>
+      <span class="d">Custom Domain in Railway + one CNAME record in your host's Zone Editor. From now on you only use your own domain.</span>
+      <span class="f">deployment-guide.html → Phase 4</span>
+    </div></div>
+
+    <div class="rstep"><div class="dot">6</div><div class="body">
+      <input type="checkbox" data-chk><span class="tm">20 min</span>
+      <b class="t">Telegram + admin panel + TWA — the golden loop ✨</b>
+      <span class="d">setWebhook → customer bot live; <span class="ic">/admin</span> = web panel; the bot's menu button = TWA. Golden test: a test order → ZX reference → Telegram alert → act from the panel.</span>
+      <span class="f">deployment-guide.html → Phase 5</span>
+    </div></div>
+
+    <div class="rstep"><div class="dot">7</div><div class="body">
+      <input type="checkbox" data-chk><span class="tm">15 min</span>
+      <b class="t">Widget on the site (cPanel)</b>
+      <span class="d">Upload <span class="ic">frontend/zenovix-chat.js</span> to <span class="ic">public_html/js/</span> + a 2-line embed pointing at zenovix-production.up.railway.app (code sample and the WordPress variant are in the guide).</span>
+      <span class="f">setup-guide.html → Path 1, section 5</span><span class="f">frontend/embed-snippet.html</span>
+    </div></div>
+
+    <div class="rstep"><div class="dot">8</div><div class="body">
+      <input type="checkbox" data-chk><span class="tm">10 min</span>
+      <b class="t">Final 8-point test</b>
+      <span class="d">Live chat, 🟢 catalog, order → ZX + alert, 🔊 button, 🎤 mic, /track, FA/RTL, mobile.</span>
+      <span class="f">deployment-guide.html → Phase 7</span>
+    </div></div>
+
+    <div class="rstep"><div class="dot">9</div><div class="body">
+      <input type="checkbox" data-chk><span class="tm">10 min</span>
+      <b class="t">Monitoring + backup — done! 🎉</b>
+      <span class="d">UptimeRobot on /health + Postgres backups. Future updates = just a commit on GitHub. Bonus: the root URL is now a real landing page with the live widget (Telegram-Web-App ready) /admin is a team backstage — set the ADMIN_PASSWORD variable to lock it — and the Telegram channel activates itself the moment TELEGRAM_BOT_TOKEN exists (setup: /tg/set-webhook/<secret>; managers get instant order pushes).</span>
+      <span class="f">deployment-guide.html → Phase 8</span>
+    </div></div>
+
+  </div></div>
+  <div class="win">🎯 Stuck anywhere? The troubleshooting table at the end of <span class="ic">deployment-guide.html</span> covers most common issues.</div>
+</div>
+
+<div class="sec">
+  <h2>📦 What's inside this package?</h2>
+  <div class="card">
+    <table>
+      <tr><th>Path</th><th>What it is / when you need it</th></tr>
+      <tr><td><span class="ic">START-HERE.html</span></td><td>⭐ this guide — the master roadmap</td></tr>
+      <tr><td><span class="ic">launch/main.py</span></td><td>patched AGI file (CORS) → replaces <span class="ic">app/main.py</span> on GitHub (step 2)</td></tr>
+      <tr><td><span class="ic">launch/README.md</span></td><td>short note about that file</td></tr>
+      <tr><td><span class="ic">railway-variables-READY.env</span></td><td>all Railway variables ready — only PASTE_ items to fill (step 4)</td></tr>
+      <tr><td><span class="ic">deployment-guide.html</span></td><td>⭐ 9-phase launch guide with full detail + troubleshooting</td></tr>
+      <tr><td><span class="ic">frontend/zenovix-chat.js</span></td><td>widget v3.2 → upload to the site (step 7)</td></tr>
+      <tr><td><span class="ic">frontend/embed-snippet.html</span></td><td>embed code + every optional widget setting</td></tr>
+      <tr><td><span class="ic">frontend/demo.html</span></td><td>local widget test page (optional)</td></tr>
+      <tr><td><span class="ic">setup-guide.html</span></td><td>step-by-step widget install (dual-path: cloud brain / local backend)</td></tr>
+      <tr><td><span class="ic">architecture-blueprint.html</span></td><td>reference architecture + the Xbot integration plan (step 1)</td></tr>
+      <tr><td><span class="ic">comparison-report.html</span></td><td>original platform vs widget fork comparison — for stakeholders</td></tr>
+      <tr><td><span class="ic">backend/</span></td><td>lightweight cPanel fallback backend (optional — later)</td></tr>
+      <tr><td><span class="ic">tests/suite.js</span></td><td>45 automated tests — <span class="ic">cd tests &amp;&amp; node suite.js</span></td></tr>
+      <tr><td><span class="ic">README.md</span></td><td>full widget technical docs + API</td></tr>
+    </table>
+    <div class="warn">🔐 <b>Golden rule:</b> never put a token or password inside this package or the repo — secrets live only in Railway Variables.</div>
+  </div>
+</div>
+
+<footer>
+  Zenovix v3.2 — complete DIY package ● 45/45 tests green ● September 10, 2026<br>
+  Print/PDF: <code>Ctrl+P</code>
+</footer>
+
+</div>
+<script>
+(function(){var b=Array.prototype.slice.call(document.querySelectorAll("input[data-chk]"));var f=document.getElementById("barFill"),t=document.getElementById("barText");var s=null;try{s=window.localStorage;s.getItem("zxshEN");}catch(e){s=null;}
+function u(sv){var d=0;b.forEach(function(x,i){var st=x.closest(".rstep");if(x.checked){d++;st.classList.add("done");}else{st.classList.remove("done");}if(sv&&s){try{s.setItem("zxshEN"+i,x.checked?"1":"0");}catch(e){}}});f.style.width=Math.round(d/b.length*100)+"%";t.innerHTML=d===b.length?"🎉 Project complete — 9/9!":"<b>"+d+"</b> of "+b.length+" steps";}
+b.forEach(function(x,i){if(s){try{x.checked=s.getItem("zxshEN"+i)==="1";}catch(e){}}x.addEventListener("change",function(){u(true);});});u(false);})();
+</script>
+</body>
+</html>

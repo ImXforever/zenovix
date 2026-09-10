@@ -1,0 +1,44 @@
+<!-- ============================================================
+  Zenovix Chat Widget v3.2 — embed snippet (LIVE brain pre-configured)
+  Put these two blocks before </body> on the main site.
+  Brain: https://zenovix-production.up.railway.app  (verified live)
+  ============================================================ -->
+
+<!-- 1) Settings — only api/apiBase are required; the rest is optional -->
+<script>
+  window.ZenovixChat = {
+    api:     "https://zenovix-production.up.railway.app/api/chat",     /* ← live brain (verified) */
+    apiBase: "https://zenovix-production.up.railway.app/api/public",   /* ← full LIVE: catalog + enquiry (ZX ref) + e-mail */
+
+    /* ── optional ─────────────────────────────────────────── */
+    lang: "en",                /* any of the 21 picker languages */
+    theme: "dark",             /* "dark" | "light"               */
+    askName: true,             /* welcome + name capture (AGI bot style) */
+    title: "Zenovix",
+    subtitle: "Digital Operations Desk",
+    buttonText: "Ask Zenovix",
+    avatarText: "Z",
+    sound: true,
+    tts: true,                 /* 🔊 read-aloud button next to the widget (Web Speech) */
+    stt: true,                 /* 🎤 speech-to-text mic in the composer */
+    whatsappLink: "https://wa.me/97145701100",
+    email: "studio@zenovix.com",
+    phone: "+971 4570 1100"
+  };
+</script>
+
+<!-- 2) The widget itself — put zenovix-chat.js in public_html/js/ -->
+<script src="/js/zenovix-chat.js?v=3.2" defer></script>
+
+<!--
+  Open the chat from anywhere on the page:
+  <a href="#" data-open-chat>Ask Zenovix</a>
+
+  JavaScript API:
+  ZenovixChatAPI.open() / .close() / .toggle() / .send("hello")
+  ZenovixChatAPI.reset() / .setLang("fa") / .openCatalog()
+
+  Verify the brain any time:
+  https://zenovix-production.up.railway.app/health        → {"ok":true,…}
+  https://zenovix-production.up.railway.app/api/public/site
+-->

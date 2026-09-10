@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Zenovix Chat v3.2 — Bot Parity + Voice · demo</title>
+<style>
+:root{--bg:#0E0A1E;--ink:#F1ECFB;--dim:#A79FBE;--card:#16112A;--line:rgba(255,255,255,.12);--teal:#00A884}
+*{box-sizing:border-box}
+body{margin:0;min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+background:radial-gradient(1200px 700px at 70% -10%,rgba(138,63,230,.25),transparent),radial-gradient(900px 500px at 10% 110%,rgba(0,168,132,.18),transparent),var(--bg);
+color:var(--ink);font:16px/1.65 'Inter','Segoe UI',system-ui,sans-serif;text-align:center;padding:24px}
+.card{max-width:680px}
+h1{font-size:clamp(1.5rem,4vw,2.3rem);margin:0 0 8px}
+.grad{background:linear-gradient(135deg,#25D366,#00A884);-webkit-background-clip:text;background-clip:text;color:transparent}
+p{color:var(--dim);margin:6px 0}
+.chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:16px 0 4px}
+.chips button{background:var(--card);border:1px solid var(--line);color:var(--ink);border-radius:999px;
+padding:10px 16px;font:600 13.5px 'Inter',system-ui,sans-serif;cursor:pointer;transition:.15s}
+.chips button:hover{border-color:var(--teal);transform:translateY(-1px)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:9px;margin-top:18px;text-align:start}
+.grid div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:12.8px;color:var(--dim)}
+.grid b{display:block;color:var(--ink);font-size:13px;margin-bottom:2px}
+.hint{font-size:.8rem;color:#6E6879;margin-top:14px}
+code{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:2px 8px;font-size:.82rem;direction:ltr;display:inline-block}
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>Zenovix Chat <span class="grad">v3.2 — Bot Parity + Voice</span></h1>
+  <p>The WhatsApp world of the Zenovix bot — every AGI capability in one widget:</p>
+  <div class="grid">
+    <div><b>💬 Chat</b>free text → AI/KB · inline keyboards · emoji · reactions</div>
+    <div><b>🛍 Catalog</b>6 AGI services (or LIVE backend catalog)</div>
+    <div><b>📦 Orders &amp; Quotes</b>qty stepper → confirm → HITL pending</div>
+    <div><b>👔 Manager</b>approval queue · reject reasons · auto-approve · ticket replies</div>
+    <div><b>🎫 Support</b>severity → ticket → thread → status pills</div>
+    <div><b>🌍 EN / FA / AR</b>full RTL · trilingual bot brain</div>
+    <div><b>✓✓ WhatsApp realism</b>ticks · typing · doodle · presence · unread · sounds</div>
+    <div><b>🟢 LIVE / 🔵 SIM</b>with or without the AGI backend — zero config</div>
+    <div><b>📧 E-mail capture</b>LIVE enquiries ask for e-mail → real ZX reference</div>
+    <div><b>🔊 TTS + 🎤 STT</b>read answers aloud · voice input — Xbot port</div>
+    <div><b>📦 /track</b>per-reference status (ZX → backend)</div>
+  </div>
+  <div class="chips" style="margin-top:20px">
+    <button onclick="ZenovixChatAPI.open()">Open</button>
+    <button onclick="ZenovixChatAPI.send('What services do you offer?')">Services</button>
+    <button onclick="ZenovixChatAPI.openCatalog()">Catalog</button>
+    <button onclick="ZenovixChatAPI.setLang('fa')">فارسی</button>
+    <button onclick="ZenovixChatAPI.setLang('en')">EN</button>
+  </div>
+  <p class="hint">Backend: <code>python3 backend/app.py</code> → <code>http://localhost:5000</code> — full parity: catalog, enquiry (ZX reference), chat, e-mail capture</p>
+</div>
+<script>window.ZenovixChat = { api: "https://zenovix-production.up.railway.app/api/chat", apiBase: "https://zenovix-production.up.railway.app/api/public" };</script>
+<script src="./zenovix-chat.js" defer></script>
+</body>
+</html>

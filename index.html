@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Zenovix — chat with us</title>
+<meta name="description" content="The Zenovix intelligence desk, live. Ask about our six services, get a quote, open a ticket — in 21 languages, with voice.">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="theme-color" content="#0E0A1E">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Zenovix">
+<link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png">
+<style>
+/* ═══ zenovix.ae theme tokens ═══ */
+:root{--bg:#0E0A1E;--card:#16112A;--card2:#1D1636;--line:rgba(255,255,255,.12);--ink:#F1ECFB;--dim:#A79FBE;
+--faint:#6E6879;--purple:#8A3FE6;--blue:#3B8DF5;--green:#25D366;--teal:#00A884}
+*{box-sizing:border-box}html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.7 'Inter','Segoe UI',system-ui,sans-serif;overflow:hidden;
+background-image:
+ radial-gradient(1100px 620px at 88% -6%,rgba(138,63,230,.22),transparent),
+ radial-gradient(900px 540px at 0% 22%,rgba(59,141,245,.12),transparent),
+ radial-gradient(rgba(138,63,230,.055) 1px,transparent 1px);
+background-size:auto,auto,26px 26px}
+
+/* ═══ app bar (site-styled) ═══ */
+.bar{position:fixed;inset:0 0 auto 0;height:62px;z-index:100;display:flex;align-items:center;gap:14px;
+padding:0 clamp(14px,3vw,30px);background:rgba(22,17,42,.82);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:11px;min-width:0}
+.avz{width:38px;height:38px;border-radius:12px;flex:none;display:flex;align-items:center;justify-content:center;
+background:linear-gradient(135deg,var(--purple),var(--blue));font:800 1.05rem 'Inter',sans-serif;color:#fff;box-shadow:0 6px 18px rgba(138,63,230,.35)}
+.brand b{font-size:1.04rem;line-height:1.2;white-space:nowrap}
+.brand small{display:block;color:var(--dim);font-size:.76rem;line-height:1.2;white-space:nowrap}
+.brand small i{font-style:normal;color:var(--green)}
+.bar-right{margin-inline-start:auto;display:flex;align-items:center;gap:9px}
+.pill{display:inline-flex;align-items:center;gap:7px;background:rgba(37,211,102,.1);border:1px solid rgba(37,211,102,.4);
+color:var(--green);border-radius:999px;padding:7px 15px;font:600 .78rem 'Inter',sans-serif;text-decoration:none;white-space:nowrap}
+.pill .d{width:8px;height:8px;border-radius:99px;background:var(--faint)}
+.pill .d.on{background:var(--green);box-shadow:0 0 8px rgba(37,211,102,.8);animation:pu 2.2s infinite}
+@keyframes pu{0%,100%{box-shadow:0 0 0 3px rgba(37,211,102,.25)}55%{box-shadow:0 0 0 7px rgba(37,211,102,.06)}}
+.login{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:12px;padding:10px 20px;cursor:pointer;
+background:linear-gradient(135deg,var(--purple),var(--blue));color:#fff;font:700 .88rem 'Inter',sans-serif;
+text-decoration:none;box-shadow:0 8px 22px rgba(99,74,229,.35);transition:.15s;white-space:nowrap}
+.login:hover{transform:translateY(-1px);filter:brightness(1.08)}
+#warnbar{position:fixed;top:62px;inset-inline:0;z-index:99;display:none;text-align:center;background:rgba(255,197,61,.1);
+border-bottom:1px solid rgba(255,197,61,.4);color:#FFD98A;font-size:.84rem;padding:8px 16px}
+
+/* mobile lock button (header hides on phones; the chat owns the screen) */
+.mlock{display:none;position:fixed;top:calc(env(safe-area-inset-top,0px) + 10px);right:12px;z-index:99997;
+width:40px;height:40px;border-radius:12px;background:rgba(22,17,42,.85);border:1px solid var(--line);
+align-items:center;justify-content:center;text-decoration:none;font-size:1rem;backdrop-filter:blur(8px)}
+
+/* ═══ the WhatsApp-style chat: widget panel → full-page card ═══ */
+.zxc-panel{
+ --zxc-panelbg:#0E0A1E!important; --zxc-chatbg:#130E27!important; --zxc-head:#16112A!important;
+ --zxc-in:#1D1636!important; --zxc-out:#33236B!important; --zxc-ink:#F1ECFB!important; --zxc-dim:#A79FBE!important;
+ --zxc-line:rgba(255,255,255,.12)!important; --zxc-inputbg:#16112A!important; --zxc-hover:#1D1636!important;
+ left:0!important; right:0!important; margin:0 auto!important;
+ top:78px!important; bottom:20px!important;
+ width:min(620px,calc(100vw - 28px))!important; height:auto!important; max-height:none!important;
+ border:1px solid var(--line)!important; border-radius:18px!important;
+ box-shadow:0 30px 90px rgba(0,0,0,.55),0 0 0 1px rgba(138,63,230,.08)!important;
+}
+/* FAB is not needed — the page IS the chat */
+.zxc-fab{display:none!important}
+/* keep the read-aloud toggle: bottom-left, out of the way */
+.zxc-ttsbtn{right:auto!important;left:18px!important;bottom:18px!important}
+/* small screens: true full-screen app (safe-area aware) */
+@media (max-width:760px){
+ .bar,.bar-right{display:none}
+ .mlock{display:flex}
+ .zxc-panel{top:0!important;bottom:0!important;width:100vw!important;height:100dvh!important;border-radius:0!important;border:0!important;
+  padding-bottom:env(safe-area-inset-bottom,0px)}
+ .zxc-ttsbtn{left:10px!important;bottom:calc(env(safe-area-inset-bottom,0px) + 84px)!important}
+}
+/* reopen card if the chat gets closed */
+#reopen{position:fixed;inset:0;z-index:98;display:none;align-items:center;justify-content:center;padding:20px}
+#reopen.show{display:flex}
+#reopen button{border:0;border-radius:16px;padding:16px 30px;cursor:pointer;
+background:linear-gradient(135deg,var(--purple),var(--blue));color:#fff;font:700 1rem 'Inter',sans-serif;box-shadow:0 12px 34px rgba(99,74,229,.4)}
+.corner{position:fixed;bottom:3px;right:12px;z-index:90;color:var(--faint);font-size:.7rem;letter-spacing:.02em}
+.corner a{color:var(--faint);text-decoration:none;margin-inline-start:10px}
+.corner a:hover{color:var(--dim)}
+@media (max-width:760px){.corner{display:none}}
+</style>
+</head>
+<body>
+
+<!-- app bar -->
+<header class="bar">
+  <div class="brand">
+    <span class="avz">Z</span>
+    <div><b>Zenovix</b><small>Intelligence desk · <i>● online</i></small></div>
+  </div>
+  <div class="bar-right">
+    <a class="pill" href="/health" id="hl"><span class="d" id="hdot"></span><span id="htxt">LIVE</span></a>
+    <a class="login" href="/admin">&#128272; Team Login</a>
+  </div>
+</header>
+<div id="warnbar">&#9888;&#65039; This page is opened as a plain file — the browser blocks the cross-server chat. Open it on <b>zenovix-production.up.railway.app</b> (that is how it ships).</div>
+
+<!-- mobile lock -->
+<a class="mlock" href="/admin">&#128274;</a>
+
+<!-- reopen (appears only if the chat is closed) -->
+<div id="reopen"><button id="ropen" type="button">&#128172; Open the chat</button></div>
+
+<div class="corner">© 2026 Zenovix · zenovix.ae<a href="/api">api</a><a href="/demo">demo</a><a href="https://github.com/ImXforever/zenovix" target="_blank" rel="noopener">source</a></div>
+
+<script>
+/* API base: same-origin when served by the brain; live-brain fallback otherwise */
+(function () {
+  var h = location.hostname;
+  var local = h === "zenovix-production.up.railway.app" || /\.railway\.app$/.test(h) || h === "localhost" || h === "127.0.0.1";
+  var BASE = (location.protocol.indexOf("http") === 0 && local) ? "" : "https://zenovix-production.up.railway.app";
+  window.ZenovixChat = {
+    api: BASE + "/api/chat",
+    apiBase: BASE + "/api/public",
+    lang: "en",
+    sound: true,
+    tts: true,
+    stt: true,
+    askName: true
+  };
+  /* LIVE pill */
+  fetch(BASE + "/health").then(function (r) { return r.json(); }).then(function (j) {
+    if (j && j.ok) document.getElementById("hdot").classList.add("on");
+    else document.getElementById("htxt").textContent = "DEGRADED";
+  }).catch(function () { document.getElementById("htxt").textContent = "OFFLINE"; });
+  /* PWA */
+  if ("serviceWorker" in navigator && location.protocol.indexOf("http") === 0) {
+    navigator.serviceWorker.register("/sw.js").catch(function () {});
+  }
+})();
+</script>
+<script src="/widget.js" defer></script>
+<script>
+window.addEventListener("load", function () {
+  /* the chat IS the page — open it immediately */
+  setTimeout(function () { if (window.ZenovixChatAPI) { try { ZenovixChatAPI.open(); } catch (e) {} } }, 350);
+  /* if the visitor closes the chat, give a way back in */
+  var ro = document.getElementById("reopen");
+  document.getElementById("ropen").addEventListener("click", function () { if (window.ZenovixChatAPI) ZenovixChatAPI.open(); });
+  var iv = setInterval(function () {
+    var p = document.querySelector(".zxc-panel");
+    if (!p) return;
+    clearInterval(iv);
+    var sync = function () { ro.classList.toggle("show", !p.classList.contains("zxc-open")); };
+    new MutationObserver(sync).observe(p, { attributes: true, attributeFilter: ["class"] });
+    sync();
+  }, 300);
+  /* file:// sanity note */
+  setTimeout(function () {
+    var m = document.querySelector(".zxc-mode");
+    if (m && m.textContent !== "LIVE") document.getElementById("warnbar").style.display = "block";
+  }, 4200);
+});
+</script>
+</body>
+</html>

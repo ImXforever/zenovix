@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  parity-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install backend dependency (flask)
+        run: pip install flask
+
+      - name: Syntax checks
+        run: |
+          python -m py_compile backend/app.py backend/passenger_wsgi.py backend/telegram_bot.py
+          node --check frontend/zenovix-chat.js
+
+      - name: Widget copies are identical (frontend vs backend/static)
+        run: cmp frontend/zenovix-chat.js backend/static/zenovix-chat.js
+
+      - name: Install test dependencies (jsdom)
+        working-directory: tests
+        run: npm install
+
+      - name: Start the backend
+        run: |
+          nohup python backend/app.py > server.log 2>&1 &
+          for i in $(seq 1 30); do
+            curl -sf http://127.0.0.1:5000/health && break
+            sleep 1
+          done
+          curl -sf http://127.0.0.1:5000/health
+
+      - name: Run the 72-check parity suite
+        run: node tests/suite.js
+
+      - name: Show server log on failure
+        if: failure()
+        run: tail -40 server.log
